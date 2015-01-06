@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jutaro/purescript-matrix.svg?branch=master)](https://travis-ci.org/jutaro/purescript-matrix)
+
 Matrices for purescript. 
 Started with this for purescript-webgl binding.
 
