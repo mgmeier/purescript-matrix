@@ -103,13 +103,13 @@ makeOrtho left right bottom top znear zfar =
   let tX = -(right+left)/(right-left)
       tY = -(top+bottom)/(top-bottom)
       tZ = -(zfar+znear)/(zfar-znear)
-      x = 2 / right-left
-      y = 2 / top-bottom
-      z = -2 / zfar-znear
-  in Mat [2 / right-left,0,0,0,
-           0,2 / top-bottom,0,0,
-           0,0,-2 / (zfar-znear),0,
-           -(right+left)/(right-left),-(top+bottom)/(top-bottom),-(zfar+znear)/(zfar-znear),1]
+      x = 2 / (right-left)
+      y = 2 / (top-bottom)
+      z = -2 / (zfar-znear)
+  in Mat [x,0,0,0,
+          0,y,0,0,
+          0,0,z,0,
+          tX,tY,tZ,1]
 
 
 -- | Creates a matrix for a 2D orthogonal frustum projection with the given
