@@ -2,134 +2,352 @@
 
 ## Module Data.Array.Extended
 
-### Values
+#### `slice`
 
-    slice :: forall a. Number -> Number -> [a] -> [a]
+``` purescript
+slice :: forall a. Number -> Number -> [a] -> [a]
+```
 
 
 ## Module Data.Matrix
 
-### Types
+#### `Mat`
 
-    newtype Mat s a where
-      Mat :: [a] -> Mat s a
-
-
-### Type Classes
-
-    class (Sized (m a)) <= Matrix m a where
-      generate :: (Number -> Number -> a) -> m a
+``` purescript
+newtype Mat s a
+  = Mat [a]
+```
 
 
-### Type Class Instances
+#### `sm2`
 
-    instance applyMat :: Apply (Mat s)
-
-    instance eqMat :: (Eq a) => Eq (Mat s a)
-
-    instance functorMat :: Functor (Mat s)
-
-    instance m2 :: Matrix (Mat Two) a
-
-    instance m3 :: Matrix (Mat Three) a
-
-    instance m4 :: Matrix (Mat Four) a
-
-    instance showMat2 :: (Show a) => Show (Mat Two a)
-
-    instance showMat3 :: (Show a) => Show (Mat Three a)
-
-    instance showMat4 :: (Show a) => Show (Mat Four a)
-
-    instance sm2 :: Sized (Mat Two a)
-
-    instance sm3 :: Sized (Mat Three a)
-
-    instance sm4 :: Sized (Mat Four a)
+``` purescript
+instance sm2 :: Sized (Mat Two a)
+```
 
 
-### Values
+#### `sm3`
 
-    columns :: forall s a. (Matrix (Mat s) a) => Mat s a -> [[a]]
+``` purescript
+instance sm3 :: Sized (Mat Three a)
+```
 
-    fromArray :: forall a s. (Matrix (Mat s) a) => [a] -> Mat s a
 
-    generate_ :: forall a s. Number -> (Number -> Number -> a) -> Mat s a
+#### `sm4`
 
-    getElem :: forall s a. (Matrix (Mat s) a) => Number -> Number -> Mat s a -> a
+``` purescript
+instance sm4 :: Sized (Mat Four a)
+```
 
-    identity :: forall s a. (Matrix (Mat s) Number) => Mat s Number
 
-    scaleMatrix :: forall a s. (Matrix (Mat s) a, Num a) => a -> Mat s a -> Mat s a
+#### `Matrix`
 
-    toArray :: forall s a. Mat s a -> [a]
+``` purescript
+class (Sized (m a)) <= Matrix m a where
+  generate :: (Number -> Number -> a) -> m a
+```
 
-    transpose :: forall a s. (Matrix (Mat s) a) => Mat s a -> Mat s a
+
+#### `m2`
+
+``` purescript
+instance m2 :: Matrix (Mat Two) a
+```
+
+
+#### `m3`
+
+``` purescript
+instance m3 :: Matrix (Mat Three) a
+```
+
+
+#### `m4`
+
+``` purescript
+instance m4 :: Matrix (Mat Four) a
+```
+
+
+#### `generate_`
+
+``` purescript
+generate_ :: forall a s. Number -> (Number -> Number -> a) -> Mat s a
+```
+
+#### `showMat2`
+
+``` purescript
+instance showMat2 :: (Show a) => Show (Mat Two a)
+```
+
+
+#### `showMat3`
+
+``` purescript
+instance showMat3 :: (Show a) => Show (Mat Three a)
+```
+
+
+#### `showMat4`
+
+``` purescript
+instance showMat4 :: (Show a) => Show (Mat Four a)
+```
+
+
+#### `columns`
+
+``` purescript
+columns :: forall s a. (Matrix (Mat s) a) => Mat s a -> [[a]]
+```
+
+
+#### `eqMat`
+
+``` purescript
+instance eqMat :: (Eq a) => Eq (Mat s a)
+```
+
+
+#### `functorMat`
+
+``` purescript
+instance functorMat :: Functor (Mat s)
+```
+
+
+#### `applyMat`
+
+``` purescript
+instance applyMat :: Apply (Mat s)
+```
+
+
+#### `identity`
+
+``` purescript
+identity :: forall s a. (Matrix (Mat s) Number) => Mat s Number
+```
+
+#### `getElem`
+
+``` purescript
+getElem :: forall s a. (Matrix (Mat s) a) => Number -> Number -> Mat s a -> a
+```
+
+/O(1)/. Get an element of a matrix.
+
+#### `scaleMatrix`
+
+``` purescript
+scaleMatrix :: forall a s. (Matrix (Mat s) a, Num a) => a -> Mat s a -> Mat s a
+```
+
+#### `fromArray`
+
+``` purescript
+fromArray :: forall a s. (Matrix (Mat s) a) => [a] -> Mat s a
+```
+
+
+#### `toArray`
+
+``` purescript
+toArray :: forall s a. Mat s a -> [a]
+```
+
+
+#### `transpose`
+
+``` purescript
+transpose :: forall a s. (Matrix (Mat s) a) => Mat s a -> Mat s a
+```
 
 
 ## Module Data.Matrix3
 
-### Types
+#### `Mat3`
 
-    type Mat3 = Mat Three Number
+``` purescript
+type Mat3 = Mat Three Number
+```
 
 
-### Values
+#### `mat3`
 
-    mat3 :: [Number] -> Mat3
+``` purescript
+mat3 :: [Number] -> Mat3
+```
 
-    normalFromMat4 :: Mat Four Number -> Maybe Mat3
+
+#### `normalFromMat4`
+
+``` purescript
+normalFromMat4 :: Mat Four Number -> Maybe Mat3
+```
+
 
 
 ## Module Data.Matrix4
 
-### Types
+#### `Vec3N`
 
-    type Mat4 = Mat Four Number
+``` purescript
+type Vec3N = V3.Vec3 Number
+```
 
-    type Vec3N = V3.Vec3 Number
+
+#### `Mat4`
+
+``` purescript
+type Mat4 = Mat Four Number
+```
 
 
-### Values
+#### `mat4`
 
-    inverseOrthonormal :: Mat4 -> Mat4
+``` purescript
+mat4 :: [Number] -> Mat4
+```
 
-    makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
 
-    makeFrustum :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
+#### `transform`
 
-    makeLookAt :: Vec3N -> Vec3N -> Vec3N -> Mat4
+``` purescript
+transform :: Mat4 -> Vec3N -> Vec3N
+```
 
-    makeOrtho :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
+Multiply a V.Vector by a 4x4 matrix: m * v
 
-    makeOrtho2D :: Number -> Number -> Number -> Number -> Mat4
+#### `inverseOrthonormal`
 
-    makePerspective :: Number -> Number -> Number -> Number -> Mat4
+``` purescript
+inverseOrthonormal :: Mat4 -> Mat4
+```
 
-    makeRotate :: Number -> Vec3N -> Mat4
+#### `makeFrustum`
 
-    makeScale :: Vec3N -> Mat4
+``` purescript
+makeFrustum :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
+```
 
-    makeScale3 :: Number -> Number -> Number -> Mat4
+#### `makePerspective`
 
-    makeTranslate :: Vec3N -> Mat4
+``` purescript
+makePerspective :: Number -> Number -> Number -> Number -> Mat4
+```
 
-    makeTranslate3 :: Number -> Number -> Number -> Mat4
+#### `makeOrtho`
 
-    mat4 :: [Number] -> Mat4
+``` purescript
+makeOrtho :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
+```
 
-    mul :: Mat4 -> Mat4 -> Mat4
+#### `makeOrtho2D`
 
-    mulAffine :: Mat4 -> Mat4 -> Mat4
+``` purescript
+makeOrtho2D :: Number -> Number -> Number -> Number -> Mat4
+```
 
-    rotate :: Number -> Vec3N -> Mat4 -> Mat4
+#### `mul`
 
-    scale :: Vec3N -> Mat4 -> Mat4
+``` purescript
+mul :: Mat4 -> Mat4 -> Mat4
+```
 
-    scale3 :: Number -> Number -> Number -> Mat4 -> Mat4
+Matrix multiplcation: a * b
 
-    transform :: Mat4 -> Vec3N -> Vec3N
+#### `mulAffine`
 
-    translate :: Vec3N -> Mat4 -> Mat4
+``` purescript
+mulAffine :: Mat4 -> Mat4 -> Mat4
+```
 
-    translate3 :: Number -> Number -> Number -> Mat4 -> Mat4
+Matrix multiplication, assuming a and b are affine: a * b
+
+#### `makeRotate`
+
+``` purescript
+makeRotate :: Number -> Vec3N -> Mat4
+```
+
+Creates a transformation matrix for rotation in radians about the 3-element V.Vector axis.
+
+#### `rotate`
+
+``` purescript
+rotate :: Number -> Vec3N -> Mat4 -> Mat4
+```
+
+Concatenates a rotation in radians about an axis to the given matrix.
+
+#### `makeScale3`
+
+``` purescript
+makeScale3 :: Number -> Number -> Number -> Mat4
+```
+
+#### `makeScale`
+
+``` purescript
+makeScale :: Vec3N -> Mat4
+```
+
+#### `scale3`
+
+``` purescript
+scale3 :: Number -> Number -> Number -> Mat4 -> Mat4
+```
+
+Concatenates a scaling to the given matrix.
+
+#### `scale`
+
+``` purescript
+scale :: Vec3N -> Mat4 -> Mat4
+```
+
+Concatenates a scaling to the given matrix.
+
+#### `makeTranslate3`
+
+``` purescript
+makeTranslate3 :: Number -> Number -> Number -> Mat4
+```
+
+#### `makeTranslate`
+
+``` purescript
+makeTranslate :: Vec3N -> Mat4
+```
+
+#### `translate3`
+
+``` purescript
+translate3 :: Number -> Number -> Number -> Mat4 -> Mat4
+```
+
+Concatenates a translation to the given matrix.
+
+#### `translate`
+
+``` purescript
+translate :: Vec3N -> Mat4 -> Mat4
+```
+
+Concatenates a translation to the given matrix.
+
+#### `makeLookAt`
+
+``` purescript
+makeLookAt :: Vec3N -> Vec3N -> Vec3N -> Mat4
+```
+
+#### `makeBasis`
+
+``` purescript
+makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
+```
+
+Creates a transform from a basis consisting of 3 linearly independent V.Vectors.
