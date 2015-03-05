@@ -22,6 +22,8 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-vector" : "*"
+    "purescript-vector" : "*",
+    "purescript-arrays" : "*",
+    "purescript-extensions" : "*"
   }
 }

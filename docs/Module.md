@@ -351,3 +351,282 @@ makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
 ```
 
 Creates a transform from a basis consisting of 3 linearly independent V.Vectors.
+
+
+## Module Data.ST.Matrix
+
+#### `STMat`
+
+``` purescript
+data STMat s h a
+  = STMat [[a]] (STArray h a)
+```
+
+
+#### `unsafeFreeze`
+
+``` purescript
+unsafeFreeze :: forall a h. STArray h a -> [a]
+```
+
+#### `unsafeThaw`
+
+``` purescript
+unsafeThaw :: forall a h. [a] -> STArray h a
+```
+
+
+#### `STMat4`
+
+``` purescript
+type STMat4 h = STMat Four h Number
+```
+
+
+#### `identityST`
+
+``` purescript
+identityST :: forall s h r. (M.Matrix (M.Mat s) Number) => STMat s h Number -> Eff (st :: ST h | r) (STMat s h Number)
+```
+
+#### `transposeST`
+
+``` purescript
+transposeST :: forall s h r a. (M.Matrix (M.Mat s) a) => STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `scaleSTMatrixInt`
+
+``` purescript
+scaleSTMatrixInt :: forall a h r. (Num a) => Fn2 a (STArray h a) (Eff (st :: ST h | r) (STArray h a))
+```
+
+#### `scaleSTMatrix`
+
+``` purescript
+scaleSTMatrix :: forall s a h r. (Num a) => a -> STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `fromMatrix`
+
+``` purescript
+fromMatrix :: forall s h r a. M.Mat s a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+#### `stackPush`
+
+``` purescript
+stackPush :: forall s h r a. STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `stackPop`
+
+``` purescript
+stackPop :: forall s h r a. STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `runSTMatrixInt`
+
+``` purescript
+runSTMatrixInt :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r [a]
+```
+
+
+#### `runSTMatrix`
+
+``` purescript
+runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
+```
+
+
+
+## Module Data.ST.Matrix3
+
+#### `Mat3`
+
+``` purescript
+type Mat3 = Mat Three Number
+```
+
+
+#### `mat3`
+
+``` purescript
+mat3 :: [Number] -> Mat3
+```
+
+
+#### `normalFromMat4`
+
+``` purescript
+normalFromMat4 :: Mat Four Number -> Maybe Mat3
+```
+
+
+
+## Module Data.ST.Matrix4
+
+#### `Vec3N`
+
+``` purescript
+type Vec3N = V3.Vec3 Number
+```
+
+
+#### `Mat4`
+
+``` purescript
+type Mat4 = Mat Four Number
+```
+
+
+#### `mat4`
+
+``` purescript
+mat4 :: [Number] -> Mat4
+```
+
+
+#### `transform`
+
+``` purescript
+transform :: Mat4 -> Vec3N -> Vec3N
+```
+
+Multiply a V.Vector by a 4x4 matrix: m * v
+
+#### `inverseOrthonormal`
+
+``` purescript
+inverseOrthonormal :: Mat4 -> Mat4
+```
+
+#### `makeFrustum`
+
+``` purescript
+makeFrustum :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
+```
+
+#### `makePerspective`
+
+``` purescript
+makePerspective :: Number -> Number -> Number -> Number -> Mat4
+```
+
+#### `makeOrtho`
+
+``` purescript
+makeOrtho :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
+```
+
+#### `makeOrtho2D`
+
+``` purescript
+makeOrtho2D :: Number -> Number -> Number -> Number -> Mat4
+```
+
+#### `mul`
+
+``` purescript
+mul :: Mat4 -> Mat4 -> Mat4
+```
+
+Matrix multiplcation: a * b
+
+#### `mulAffine`
+
+``` purescript
+mulAffine :: Mat4 -> Mat4 -> Mat4
+```
+
+Matrix multiplication, assuming a and b are affine: a * b
+
+#### `makeRotate`
+
+``` purescript
+makeRotate :: Number -> Vec3N -> Mat4
+```
+
+Creates a transformation matrix for rotation in radians about the 3-element V.Vector axis.
+
+#### `rotate`
+
+``` purescript
+rotate :: Number -> Vec3N -> Mat4 -> Mat4
+```
+
+Concatenates a rotation in radians about an axis to the given matrix.
+
+#### `makeScale3`
+
+``` purescript
+makeScale3 :: Number -> Number -> Number -> Mat4
+```
+
+#### `makeScale`
+
+``` purescript
+makeScale :: Vec3N -> Mat4
+```
+
+#### `scale3`
+
+``` purescript
+scale3 :: Number -> Number -> Number -> Mat4 -> Mat4
+```
+
+Concatenates a scaling to the given matrix.
+
+#### `scale`
+
+``` purescript
+scale :: Vec3N -> Mat4 -> Mat4
+```
+
+Concatenates a scaling to the given matrix.
+
+#### `makeTranslate3`
+
+``` purescript
+makeTranslate3 :: Number -> Number -> Number -> Mat4
+```
+
+#### `makeTranslate`
+
+``` purescript
+makeTranslate :: Vec3N -> Mat4
+```
+
+#### `translate3`
+
+``` purescript
+translate3 :: Number -> Number -> Number -> Mat4 -> Mat4
+```
+
+Concatenates a translation to the given matrix.
+
+#### `translate`
+
+``` purescript
+translate :: Vec3N -> Mat4 -> Mat4
+```
+
+Concatenates a translation to the given matrix.
+
+#### `makeLookAt`
+
+``` purescript
+makeLookAt :: Vec3N -> Vec3N -> Vec3N -> Mat4
+```
+
+#### `makeBasis`
+
+``` purescript
+makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
+```
+
+Creates a transform from a basis consisting of 3 linearly independent V.Vectors.

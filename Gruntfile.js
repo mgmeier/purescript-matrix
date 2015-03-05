@@ -10,6 +10,17 @@ module.exports = function(grunt) {
         ],
 
         clean: ["output"],
+        
+        psc: {
+            options: {
+                main: "Data.ST.Matrix",
+                modules: ["Data.ST.Matrix"]
+            },
+            test1: {
+              src: ["src/Data/ST/Matrix.purs","<%=libFiles%>"],
+              dest: "test1.js"
+            }
+        },
 
         pscMake: ["<%=libFiles%>"],
         dotPsci: ["<%=libFiles%>"],
@@ -27,4 +38,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask("make", ["pscMake", "dotPsci", "pscDocs"]);
     grunt.registerTask("default", ["make"]);
+    grunt.registerTask("test1", ["psc:test1"]);
 };
