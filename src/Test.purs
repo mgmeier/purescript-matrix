@@ -29,10 +29,10 @@ zs = M.translate meh $ M.identity
 main = do
 
     xs <- M.runSTMatrix (ble >>= M.rotateST 90 meh)
+    bs <- M.runSTMatrix (ble >>= M.translateST meh)
+    
     print xs
     print ys
 
-    
-    bs <- M.runSTMatrix (ble >>= M.translateST meh)
     print bs
     print zs
