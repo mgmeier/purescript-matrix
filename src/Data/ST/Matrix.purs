@@ -33,9 +33,6 @@ import Control.Apply
 import Prelude.Unsafe
 import Math
 
-import Debug.Trace (print)
-import Extensions
-
 
 data STMat s h a = STMat [[a]] (STArray h a)
 {-
@@ -87,19 +84,14 @@ foreign import unsafeThaw """
 
 
 
-type STMat4 h = STMat Four h Number
-
-
 -- TODO unify slicing by splitting function in Data.Matrix 
 
 
 -- careful, clears stack!
 identityST :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
 identityST =
-    let
-        m   = M.identity :: M.Mat s Number
-        arr = unsafeThaw $ M.toArray $ m
-    in return (STMat [] arr) 
+    let m = M.identity :: M.Mat s Number
+    in STMat [] <$> thaw (M.toArray m)
 
 transposeST :: forall s h r a. (M.Matrix (M.Mat s) a) => (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 transposeST (STMat st arr) =
@@ -108,7 +100,7 @@ transposeST (STMat st arr) =
         m   = M.fromArray x :: M.Mat s a
         m'  = M.transpose m
         ar' = unsafeThaw $ M.toArray $ m'
-    in return (STMat st ar') 
+    in return (STMat st ar')                                            -- TODO needs testing! 
 
 {-
 instance eqMat :: (Eq a) => Eq (Mat s a) where
@@ -176,16 +168,5 @@ foreign import runSTMatrixInt """
 runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
 runSTMatrix eff = M.Mat <$> runSTMatrixInt eff
 
-
-testm = M.identity      :: M.Mat4
-
-ble :: forall h r . Eff (st :: ST h | r) (STMat4 h)
--- ble = fromMatrix (M.fromArray [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) >>= stackPush >>= scaleSTMatrix 2 >>= stackPop
-ble = identityST >>= scaleSTMatrix 2
-
-
-main = do
-    xs <- runSTMatrix ble
-    print xs
 
 

@@ -13,11 +13,11 @@ module.exports = function(grunt) {
         
         psc: {
             options: {
-                main: "Data.ST.Matrix",
-                modules: ["Data.ST.Matrix"]
+                main: "Test",
+                modules: ["Test"]
             },
             test1: {
-              src: ["src/Data/ST/Matrix.purs","<%=libFiles%>"],
+              src: ["src/Test.purs","<%=libFiles%>"],
               dest: "test1.js"
             }
         },
