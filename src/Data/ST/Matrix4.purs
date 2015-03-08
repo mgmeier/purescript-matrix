@@ -197,8 +197,8 @@ foreign import rotateSTInt """
              var t32    = yzc1+xs;
              var t13    = xzc1+ys;
              var t23    = yzc1-xs;
-             var t33    = z*z*c1+c;           
-           
+             var t33    = z*z*c1+c;
+
              var m  = arr.slice();
              for (var i=0; i<4; i++){
                 arr[i] = m[i] * t11 + m[i+4] * t21 + m[i+8] * t31;
@@ -212,7 +212,9 @@ foreign import rotateSTInt """
 
 
 rotateST :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
-rotateST angle (V.Vec a) v@(STMat arr) = rotateSTInt angle a arr *> return v
+rotateST angle (V.Vec a) v@(STMat arr) = do
+  rotateSTInt angle a arr
+  return v
 
 foreign import translate3STInt """
   function translate3STInt(a) {
@@ -226,8 +228,9 @@ foreign import translate3STInt """
   }""" :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
 
 translateST :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
-translateST (V.Vec a) v@(STMat arr) =
-    translate3STInt a arr *> return v
+translateST (V.Vec a) v@(STMat arr) = do
+    translate3STInt a arr
+    return v
 
 {-
 -- | Creates a transformation matrix for scaling by 3 scalar values, one for
