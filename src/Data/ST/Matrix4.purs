@@ -212,7 +212,7 @@ foreign import rotateSTInt """
 
 
 rotateST :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
-rotateST angle (V.Vec a) v@(STMat _ arr) = rotateSTInt angle a arr *> return v
+rotateST angle (V.Vec a) v@(STMat arr) = rotateSTInt angle a arr *> return v
 
 foreign import translate3STInt """
   function translate3STInt(a) {
@@ -226,7 +226,7 @@ foreign import translate3STInt """
   }""" :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
 
 translateST :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
-translateST (V.Vec a) v@(STMat _ arr) =
+translateST (V.Vec a) v@(STMat arr) =
     translate3STInt a arr *> return v
 
 {-
