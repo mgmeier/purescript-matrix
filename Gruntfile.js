@@ -10,6 +10,17 @@ module.exports = function(grunt) {
         ],
 
         clean: ["output"],
+        
+        psc: {
+            options: {
+                main: "Test",
+                modules: ["Test"]
+            },
+            test1: {
+              src: ["src/Test.purs","<%=libFiles%>"],
+              dest: "test1.js"
+            }
+        },
 
         pscMake: ["<%=libFiles%>"],
         dotPsci: ["<%=libFiles%>"],
@@ -27,4 +38,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask("make", ["pscMake", "dotPsci", "pscDocs"]);
     grunt.registerTask("default", ["make"]);
+    grunt.registerTask("test1", ["psc:test1"]);
 };

@@ -351,3 +351,148 @@ makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
 ```
 
 Creates a transform from a basis consisting of 3 linearly independent V.Vectors.
+
+
+## Module Data.ST.Matrix
+
+#### `STMat`
+
+``` purescript
+newtype STMat s h a
+  = STMat (STArray h a)
+```
+
+
+#### `unsafeFreeze`
+
+``` purescript
+unsafeFreeze :: forall a h. STArray h a -> [a]
+```
+
+#### `unsafeThaw`
+
+``` purescript
+unsafeThaw :: forall a h. [a] -> STArray h a
+```
+
+
+#### `cloneSTMat`
+
+``` purescript
+cloneSTMat :: forall s h a r. STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `identityST`
+
+``` purescript
+identityST :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
+```
+
+
+#### `transposeST`
+
+``` purescript
+transposeST :: forall s h r a. (M.Matrix (M.Mat s) a) => STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `scaleSTMatrixInt`
+
+``` purescript
+scaleSTMatrixInt :: forall a h r. (Num a) => a -> STArray h a -> Eff (st :: ST h | r) Unit
+```
+
+#### `scaleSTMatrix`
+
+``` purescript
+scaleSTMatrix :: forall s a h r. (Num a) => a -> STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
+#### `fromMatrix`
+
+``` purescript
+fromMatrix :: forall s h r a. M.Mat s a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+#### `runSTMatrixInt`
+
+``` purescript
+runSTMatrixInt :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r [a]
+```
+
+
+#### `runSTMatrix`
+
+``` purescript
+runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
+```
+
+
+
+## Module Data.ST.Matrix4
+
+#### `STMat4`
+
+``` purescript
+type STMat4 h = STMat Four h Number
+```
+
+
+#### `rotateSTInt`
+
+``` purescript
+rotateSTInt :: forall h r. Number -> [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
+```
+
+#### `rotateST`
+
+``` purescript
+rotateST :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
+```
+
+
+#### `translate3STInt`
+
+``` purescript
+translate3STInt :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
+```
+
+
+#### `translateST`
+
+``` purescript
+translateST :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
+```
+
+
+
+## Module Test
+
+#### `ble`
+
+``` purescript
+ble :: forall h r. Eff (st :: ST h | r) (M.STMat4 h)
+```
+
+
+#### `meh`
+
+``` purescript
+meh :: M.Vec3N
+```
+
+
+#### `ys`
+
+``` purescript
+ys :: M.Mat4
+```
+
+
+#### `zs`
+
+``` purescript
+zs :: M.Mat4
+```
