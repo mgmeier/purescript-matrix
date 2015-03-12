@@ -30,6 +30,14 @@ import Math
 
 type STMat4 h = STMat Four h Number
 
+identityST :: forall h r. Eff (st :: ST h | r) (STMat Four h Number)
+identityST = do
+    r <- thaw [1,0,0,0,
+              0,1,0,0,
+              0,0,1,0,
+              0,0,0,1]
+    return (STMat r)
+
 {-
 -- | Computes the inverse of the given matrix m, assuming that the matrix is
 --   orthonormal.

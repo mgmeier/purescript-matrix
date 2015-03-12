@@ -124,10 +124,10 @@ instance applyMat :: Apply (Mat s)
 ```
 
 
-#### `identity`
+#### `identity'`
 
 ``` purescript
-identity :: forall s a. (Matrix (Mat s) Number) => Mat s Number
+identity' :: forall s a. (Matrix (Mat s) Number) => Mat s Number
 ```
 
 #### `getElem`
@@ -181,6 +181,13 @@ mat3 :: [Number] -> Mat3
 ```
 
 
+#### `identity`
+
+``` purescript
+identity :: Mat3
+```
+
+
 #### `normalFromMat4`
 
 ``` purescript
@@ -212,6 +219,13 @@ mat4 :: [Number] -> Mat4
 ```
 
 
+#### `identity`
+
+``` purescript
+identity :: Mat4
+```
+
+
 #### `transform`
 
 ``` purescript
@@ -224,6 +238,12 @@ Multiply a V.Vector by a 4x4 matrix: m * v
 
 ``` purescript
 inverseOrthonormal :: Mat4 -> Mat4
+```
+
+#### `inverse`
+
+``` purescript
+inverse :: Mat4 -> Maybe Mat4
 ```
 
 #### `makeFrustum`
@@ -383,10 +403,10 @@ cloneSTMat :: forall s h a r. STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
 ```
 
 
-#### `identityST`
+#### `identityST'`
 
 ``` purescript
-identityST :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
+identityST' :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
 ```
 
 
@@ -437,6 +457,13 @@ runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> E
 
 ``` purescript
 type STMat4 h = STMat Four h Number
+```
+
+
+#### `identityST`
+
+``` purescript
+identityST :: forall h r. Eff (st :: ST h | r) (STMat Four h Number)
 ```
 
 

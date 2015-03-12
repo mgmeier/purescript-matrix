@@ -100,8 +100,8 @@ instance applyMat :: Apply (Mat s) where
 -- >     ( 0 0 ... 1 0 )
 -- >   n ( 0 0 ... 0 1 )
 --
-identity :: forall s a. (Matrix (Mat s) Number) => Mat s Number
-identity = generate \ i j -> if i == j then 1 else 0
+identity' :: forall s a. (Matrix (Mat s) Number) => Mat s Number
+identity' = generate \ i j -> if i == j then 1 else 0
 
 
 -- | /O(1)/. Get an element of a matrix.

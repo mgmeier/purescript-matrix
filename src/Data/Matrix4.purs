@@ -20,6 +20,7 @@ import qualified Data.Vector3 as V3
 import qualified Data.Vector as V
 
 import Data.Array
+import Data.Maybe
 import Prelude.Unsafe
 import Math
 
@@ -29,6 +30,13 @@ type Mat4 = Mat Four Number
 
 mat4 :: [Number] -> Mat4
 mat4 = fromArray
+
+identity :: Mat4
+identity = Mat
+           [1,0,0,0,
+            0,1,0,0,
+            0,0,1,0,
+            0,0,0,1]
 
 -- | Multiply a V.Vector by a 4x4 matrix: m * v
 transform :: Mat4 -> Vec3N -> Vec3N
@@ -52,6 +60,45 @@ inverseOrthonormal v@(Mat [x11, x12, x13, x14, x21, x22, x23, x24, x31, x32, x33
         r13 = negate (V.dot (V.Vec [y12,y22,y32]) t)
         r14 = negate (V.dot (V.Vec [y13,y23,y33]) t)
       in Mat [y11, y12, y13, 0, y21, y22, y23, 0, y31, y32, y33, 0, r12, r13, r14, y44]
+
+
+--  Calculates the inverse matrix of a mat4
+inverse :: Mat4 -> Maybe Mat4
+inverse v@(Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33]) =
+    let b00 = a00 * a11 - a01 * a10
+        b01 = a00 * a12 - a02 * a10
+        b02 = a00 * a13 - a03 * a10
+        b03 = a01 * a12 - a02 * a11
+        b04 = a01 * a13 - a03 * a11
+        b05 = a02 * a13 - a03 * a12
+        b06 = a20 * a31 - a21 * a30
+        b07 = a20 * a32 - a22 * a30
+        b08 = a20 * a33 - a23 * a30
+        b09 = a21 * a32 - a22 * a31
+        b10 = a21 * a33 - a23 * a31
+        b11 = a22 * a33 - a23 * a32
+
+        d = (b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06)
+    in if d == 0
+          then Nothing
+          else let invDet = 1 / d
+                 in Just $ Mat [(a11 * b11 - a12 * b10 + a13 * b09) * invDet,
+                          (-a01 * b11 + a02 * b10 - a03 * b09) * invDet,
+                          (a31 * b05 - a32 * b04 + a33 * b03) * invDet,
+                          (-a21 * b05 + a22 * b04 - a23 * b03) * invDet,
+                          (-a10 * b11 + a12 * b08 - a13 * b07) * invDet,
+                          (a00 * b11 - a02 * b08 + a03 * b07) * invDet,
+                          (-a30 * b05 + a32 * b02 - a33 * b01) * invDet,
+                          (a20 * b05 - a22 * b02 + a23 * b01) * invDet,
+                          (a10 * b10 - a11 * b08 + a13 * b06) * invDet,
+                          (-a00 * b10 + a01 * b08 - a03 * b06) * invDet,
+                          (a30 * b04 - a31 * b02 + a33 * b00) * invDet,
+                          (-a20 * b04 + a21 * b02 - a23 * b00) * invDet,
+                          (-a10 * b09 + a11 * b07 - a12 * b06) * invDet,
+                          (a00 * b09 - a01 * b07 + a02 * b06) * invDet,
+                          (-a30 * b03 + a31 * b01 - a32 * b00) * invDet,
+                          (a20 * b03 - a21 * b01 + a22 * b00) * invDet]
+
 
 -- | Creates a matrix for a projection frustum with the given parameters.
 -- Parameters:

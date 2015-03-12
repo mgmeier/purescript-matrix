@@ -85,9 +85,9 @@ foreign import unsafeThaw """
 cloneSTMat :: forall s h a r. (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
 
-identityST :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
-identityST =
-    let m = M.identity :: M.Mat s Number
+identityST' :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
+identityST' =
+    let m = M.identity' :: M.Mat s Number
     in STMat <$> thaw (M.toArray m)
 
 transposeST :: forall s h r a. (M.Matrix (M.Mat s) a) => (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
@@ -97,7 +97,7 @@ transposeST (STMat arr) =
         m   = M.fromArray x :: M.Mat s a
         m'  = M.transpose m
         ar' = unsafeThaw $ M.toArray $ m'
-    in return (STMat ar')                                            -- TODO needs testing! 
+    in return (STMat ar')                                            -- TODO needs testing!
 
 {-
 instance eqMat :: (Eq a) => Eq (Mat s a) where
@@ -150,6 +150,3 @@ foreign import runSTMatrixInt """
 
 runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
 runSTMatrix eff = M.Mat <$> runSTMatrixInt eff
-
-
-
