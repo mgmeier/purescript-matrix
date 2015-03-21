@@ -2,6 +2,7 @@
 
 ## Module Data.Array.Extended
 
+
 #### `slice`
 
 ``` purescript
@@ -10,6 +11,7 @@ slice :: forall a. Number -> Number -> [a] -> [a]
 
 
 ## Module Data.Matrix
+
 
 #### `Mat`
 
@@ -167,6 +169,7 @@ transpose :: forall a s. (Matrix (Mat s) a) => Mat s a -> Mat s a
 
 ## Module Data.Matrix3
 
+
 #### `Mat3`
 
 ``` purescript
@@ -197,6 +200,7 @@ normalFromMat4 :: Mat Four Number -> Maybe Mat3
 
 
 ## Module Data.Matrix4
+
 
 #### `Vec3N`
 
@@ -375,6 +379,7 @@ Creates a transform from a basis consisting of 3 linearly independent V.Vectors.
 
 ## Module Data.ST.Matrix
 
+
 #### `STMat`
 
 ``` purescript
@@ -383,11 +388,35 @@ newtype STMat s h a
 ```
 
 
+#### `copyImpl`
+
+``` purescript
+copyImpl :: forall a b h r. a -> Eff (st :: ST h | r) b
+```
+
+#### `freeze`
+
+``` purescript
+freeze :: forall a h r. STArray h a -> Eff (st :: ST h | r) [a]
+```
+
+Create an immutable copy of a mutable array.
+
+#### `thaw`
+
+``` purescript
+thaw :: forall a h r. [a] -> Eff (st :: ST h | r) (STArray h a)
+```
+
+Create a mutable copy of an immutable array.
+
 #### `unsafeFreeze`
 
 ``` purescript
 unsafeFreeze :: forall a h. STArray h a -> [a]
 ```
+
+Freeze an ST array. Do not mutate the STArray afterwards!
 
 #### `unsafeThaw`
 
@@ -410,13 +439,6 @@ identityST' :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r)
 ```
 
 
-#### `transposeST`
-
-``` purescript
-transposeST :: forall s h r a. (M.Matrix (M.Mat s) a) => STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
-```
-
-
 #### `scaleSTMatrixInt`
 
 ``` purescript
@@ -436,12 +458,6 @@ scaleSTMatrix :: forall s a h r. (Num a) => a -> STMat s h a -> Eff (st :: ST h 
 fromMatrix :: forall s h r a. M.Mat s a -> Eff (st :: ST h | r) (STMat s h a)
 ```
 
-#### `runSTMatrixInt`
-
-``` purescript
-runSTMatrixInt :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r [a]
-```
-
 
 #### `runSTMatrix`
 
@@ -452,6 +468,7 @@ runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> E
 
 
 ## Module Data.ST.Matrix4
+
 
 #### `STMat4`
 
@@ -466,33 +483,17 @@ type STMat4 h = STMat Four h Number
 identityST :: forall h r. Eff (st :: ST h | r) (STMat Four h Number)
 ```
 
-
-#### `rotateSTInt`
-
-``` purescript
-rotateSTInt :: forall h r. Number -> [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
-```
-
 #### `rotateST`
 
 ``` purescript
-rotateST :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
+rotateST :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit
 ```
-
-
-#### `translate3STInt`
-
-``` purescript
-translate3STInt :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
-```
-
 
 #### `translateST`
 
 ``` purescript
-translateST :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
+translateST :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit
 ```
-
 
 
 ## Module Test

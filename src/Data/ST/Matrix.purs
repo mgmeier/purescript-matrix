@@ -22,7 +22,7 @@ import Control.Monad.ST (ST())
 
 import Data.TypeNat
 import Data.Array.Extended
-import Data.Array.ST
+import Data.Array.ST hiding (freeze, thaw)
 import qualified Data.Vector as V
 import Data.Array
 import Data.Monoid
@@ -71,6 +71,26 @@ instance stm4 :: M.Matrix (STMat Four h) a where
 -}
 
 
+
+-- try array cloning with .slice() instead of the for-loop 
+-- implementation in Data.Array.ST. Needs benchmarking. 
+foreign import copyImpl """
+    function copyImpl(arr) {
+        return function(){
+            var as = arr.slice();
+            return as;
+        };
+    }""" :: forall a b h r. a -> Eff (st :: ST h | r) b
+
+-- | Create an immutable copy of a mutable array.
+freeze :: forall a h r. STArray h a -> Eff (st :: ST h | r) [a]
+freeze = copyImpl
+
+-- | Create a mutable copy of an immutable array.
+thaw :: forall a h r. [a] -> Eff (st :: ST h | r) (STArray h a)
+thaw = copyImpl
+
+
 -- | Freeze an ST array. Do not mutate the STArray afterwards!
 foreign import unsafeFreeze """
   function unsafeFreeze(arr) {
@@ -82,6 +102,7 @@ foreign import unsafeThaw """
     return arr;
   }""" :: forall a h. [a] -> STArray h a
 
+
 cloneSTMat :: forall s h a r. (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
 
@@ -90,6 +111,7 @@ identityST' =
     let m = M.identity' :: M.Mat s Number
     in STMat <$> thaw (M.toArray m)
 
+{-
 transposeST :: forall s h r a. (M.Matrix (M.Mat s) a) => (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 transposeST (STMat arr) =
     let
@@ -98,6 +120,7 @@ transposeST (STMat arr) =
         m'  = M.transpose m
         ar' = unsafeThaw $ M.toArray $ m'
     in return (STMat ar')                                            -- TODO needs testing!
+-}
 
 {-
 instance eqMat :: (Eq a) => Eq (Mat s a) where
@@ -139,14 +162,11 @@ foreign import scaleSTMatrixInt """
 scaleSTMatrix :: forall s a h r. (Num a) => a -> (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 scaleSTMatrix x v@(STMat arr) = scaleSTMatrixInt x arr *> return v
 
--- empties stack, careful!
 fromMatrix :: forall s h r a. M.Mat s a -> Eff (st :: ST h | r) (STMat s h a)
 fromMatrix (M.Mat m) = STMat <$> thaw m
 
-foreign import runSTMatrixInt """
-  function runSTMatrixInt(f) {
+foreign import runSTMatrix """
+  function runSTMatrix(f) {
     return (f);
-  }""" :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r [a]
+  }""" :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
 
-runSTMatrix :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
-runSTMatrix eff = M.Mat <$> runSTMatrixInt eff

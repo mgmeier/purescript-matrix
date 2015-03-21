@@ -9,6 +9,7 @@ import qualified Data.Vector as V
 
 import Control.Monad.Eff
 import Control.Monad.ST (ST())
+import Control.Apply
 import Debug.Trace (print)
 
 
@@ -28,8 +29,8 @@ zs = M.translate meh $ M.identity
 
 main = do
 
-    xs <- M.runSTMatrix (ble >>= M.rotateST 90 meh)
-    bs <- M.runSTMatrix (ble >>= M.translateST meh)
+    xs <- M.runSTMatrix (ble >>= \m -> M.rotateST 90 meh m *> return m)
+    bs <- M.runSTMatrix (ble >>= \m -> M.translateST meh m *> return m)
     
     print xs
     print ys
