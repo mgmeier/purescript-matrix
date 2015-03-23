@@ -15,21 +15,22 @@
 module Data.ST.Matrix4 where
 
 import Data.TypeNat
-import Data.Matrix4
+import Data.Matrix4 (Vec3N())
 import Data.ST.Matrix
 import qualified Data.Vector3 as V3
 import qualified Data.Vector as V
 import Control.Monad.Eff
 import Control.Monad.ST (ST())
-import Control.Apply
+-- import Control.Apply
 import Data.Array
-import Data.Array.ST
+import Data.Array.ST hiding (freeze, thaw)
 import Prelude.Unsafe
 import Math
 
 
 type STMat4 h = STMat Four h Number
 
+{-
 identityST :: forall h r. Eff (st :: ST h | r) (STMat Four h Number)
 identityST = do
     r <- thaw [1,0,0,0,
@@ -37,6 +38,13 @@ identityST = do
               0,0,1,0,
               0,0,0,1]
     return (STMat r)
+-}
+
+foreign import identityST """
+    function identityST() {
+        var as = [1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1];
+        return as;
+    }""" :: forall h r. Eff (st :: ST h | r) (STMat Four h Number)
 
 {-
 -- | Computes the inverse of the given matrix m, assuming that the matrix is
@@ -178,8 +186,8 @@ makeRotate angle axis =
 -}
 
 
-foreign import rotateSTInt """
-  function rotateSTInt(angle) {
+foreign import rotateST """
+  function rotateST(angle) {
       return function(a){
         return function(arr){
            return function(){
@@ -216,16 +224,12 @@ foreign import rotateSTInt """
            };
         };
       };
-  }""" :: forall h r. Number -> [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
+  }""" :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit
 
+-- generic type was :: forall h r. Number -> [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
 
-rotateST :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
-rotateST angle (V.Vec a) v@(STMat arr) = do
-  rotateSTInt angle a arr
-  return v
-
-foreign import translate3STInt """
-  function translate3STInt(a) {
+foreign import translateST """
+  function translateST(a) {
       return function(m){
            return function(){
              for (var i=0; i<4; i++){
@@ -233,12 +237,10 @@ foreign import translate3STInt """
              };
            };
       };
-  }""" :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
+  }""" :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit
 
-translateST :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) (STMat4 h)
-translateST (V.Vec a) v@(STMat arr) = do
-    translate3STInt a arr
-    return v
+-- generic type was :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
+
 
 {-
 -- | Creates a transformation matrix for scaling by 3 scalar values, one for
