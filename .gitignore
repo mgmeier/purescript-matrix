@@ -6,3 +6,5 @@ output/
 tmp/
 *~
 dist/*.js
+.bowerrc
+.bower.json
