@@ -1,15 +1,5 @@
 # Module Documentation
 
-## Module Data.Array.Extended
-
-
-#### `slice`
-
-``` purescript
-slice :: forall a. Number -> Number -> [a] -> [a]
-```
-
-
 ## Module Data.Matrix
 
 
