@@ -17,15 +17,18 @@ module Data.Matrix4 where
 import Data.TypeNat
 import Data.Matrix
 import qualified Data.Vector3 as V3
+import qualified Data.Vector4 as V4
 import qualified Data.Vector as V
 
 import Data.Array
 import Data.Maybe
 import Prelude.Unsafe
 import Math
+import Extensions
 
 
 type Vec3N = V3.Vec3 Number
+type Vec4N = V4.Vec4 Number
 type Mat4 = Mat Four Number
 
 mat4 :: [Number] -> Mat4
@@ -348,3 +351,80 @@ makeBasis (V.Vec [x0,x1,x2]) (V.Vec [y0,y1,y2]) (V.Vec [z0,z1,z2])=
         y0,y1,y2,0,
         z0,z1,z2,0,
         0,0,0,1]
+
+project :: Vec3N
+    -> Mat4
+    -- ^ modelview matrix
+     -> Mat4
+     -- ^ projection matrix
+     -> Vec4N
+     -- ^ viewport
+     -> Maybe Vec3N
+project (V.Vec [objx,objy,objz])
+        (Mat [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44])
+        (Mat [p11, p21, p31, p41, p12, p22, p32, p42, p13, p23, p33, p43, p14, p24, p34, p44])
+        (V.Vec [vp0,vp1,vp2,vp3]) =
+    let temp1 = [m11 * objx + m12 * objy + m13 * objz + m14,  -- w is always 1
+                m21 * objx + m22 * objy + m23 * objz + m24,
+                m31 * objx + m32 * objy + m33 * objz + m34,
+                m41 * objx + m42 * objy + m43 * objz + m44]
+        -- Projection transform, the final row of projection matrix is always [0 0 -1 0]
+        -- so we optimize for that.
+    in case temp1 of
+        [ft0,ft1,ft2,ft3] ->
+            let temp2 = [p11 * ft0 + p12 * ft1 + p13 * ft2 + p14 * ft3,
+                         p21 * ft0 + p22 * ft1 + p23 * ft2 + p24 * ft3,
+                         p31 * ft0 + p32 * ft1 + p33 * ft2 + p34 * ft3,
+                         -ft2]
+            in case temp2 of
+                [gt0,gt1,gt2,gt3] ->
+                    if gt3 == 0.0
+                        then Nothing --The w value
+                        else
+                            let gt3' = 1.0 / gt3
+                            --Perspective division
+                                gt0' = gt0 * gt3'
+                                gt1' = gt1 * gt3'
+                                gt2' = gt2 * gt3'
+                            -- Window coordinates
+                            -- Map x, y to range 0-1
+                            in Just (V.Vec [(gt0' * 0.5 + 0.5) * vp2 + vp0,
+                                           (gt1' * 0.5 + 0.5) * vp3 + vp1,
+                                           -- This is only correct when glDepthRange(0.0, 1.0)
+                                           (1.0 + gt2') * 0.5])	-- Between 0 and 1
+
+unProject :: Vec3N
+    -> Mat4
+        -- ^ modelview matrix
+    -> Mat4
+        -- ^ projection matrix
+    -> Vec4N
+        -- ^ viewport
+    -> Maybe Vec3N
+unProject (V.Vec [winx,winy,winz])
+        modelView
+        projection
+        (V.Vec [vp0,vp1,vp2,vp3]) =
+    let mvProjMatrix = mul projection modelView
+    in case inverse mvProjMatrix of
+        Nothing -> Nothing
+        Just inverse -> let inVect = V.Vec [(winx - vp0) / vp2 * 2.0 - 1.0,
+                                      (winy - vp1) / vp3 * 2.0 - 1.0,
+                                      2.0 * winz - 1.0,
+                                      1.0]
+                            out = mulMatVect inverse inVect
+                        in case out of
+                               V.Vec [out0, out1, out2, out3] ->
+                                    if out3 == 0
+                                        then Nothing
+                                        else let out3' = 1.0 / out3
+                                             in Just (V.Vec [out0 * out3',out1 * out3',out2 * out3'])
+
+mulMatVect :: Mat4 -> Vec4N -> Vec4N
+mulMatVect
+    (Mat [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44])
+    (V.Vec [v0,v1,v2,v3])
+    = V.Vec [m11 * v0 + m12 * v1 + m13 * v2 + m14 * v3,
+            m21 * v0 + m22 * v1 + m23 * v2 + m24 * v3,
+            m31 * v0 + m32 * v1 + m33 * v2 + m34 * v3,
+            m41 * v0 + m42 * v1 + m43 * v2 + m44 * v3]

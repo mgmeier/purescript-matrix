@@ -199,6 +199,13 @@ type Vec3N = V3.Vec3 Number
 ```
 
 
+#### `Vec4N`
+
+``` purescript
+type Vec4N = V4.Vec4 Number
+```
+
+
 #### `Mat4`
 
 ``` purescript
@@ -365,6 +372,26 @@ makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
 ```
 
 Creates a transform from a basis consisting of 3 linearly independent V.Vectors.
+
+#### `project`
+
+``` purescript
+project :: Vec3N -> Mat4 -> Mat4 -> Vec4N -> Maybe Vec3N
+```
+
+
+#### `unProject`
+
+``` purescript
+unProject :: Vec3N -> Mat4 -> Mat4 -> Vec4N -> Maybe Vec3N
+```
+
+#### `mulMatVect`
+
+``` purescript
+mulMatVect :: Mat4 -> Vec4N -> Vec4N
+```
+
 
 
 ## Module Data.ST.Matrix
