@@ -217,7 +217,7 @@ foreign import rotateST """
 
              var m  = arr.slice();
              for (var i=0; i<4; i++){
-                arr[i] = m[i] * t11 + m[i+4] * t21 + m[i+8] * t31;
+                 = m[i] * t11 + m[i+4] * t21 + m[i+8] * t31;
                 arr[i+4] = m[i] * t12 + m[i+4] * t22 + m[i+8] * t32;
                 arr[i+8] = m[i] * t13 + m[i+4] * t23 + m[i+8] * t33;
              };
@@ -241,6 +241,33 @@ foreign import translateST """
 
 -- generic type was :: forall h r. [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
 
+foreign import scaleST3 """
+    function scaleST3(x) {
+        return function(y){
+            return function(z){
+                return function(m){
+                    return function(){
+                        m[0] = m[0]*x;
+                        m[1] = m[1]*x;
+                        m[2] = m[2]*x;
+                        m[3] = m[3]*x;
+
+                        m[4] = m[4]*y;
+                        m[5] = m[5]*y;
+                        m[6] = m[6]*y;
+                        m[7] = m[7]*y;
+
+                        m[8] = m[8]*z;
+                        m[9] = m[9]*z;
+                        m[10] = m[10]*z;
+                        m[11] = m[11]*z;
+
+                        };
+                    };
+                };
+            };
+        }
+""" :: forall h r. Number -> Number -> Number -> STMat4 h -> Eff (st :: ST h | r) Unit
 
 {-
 -- | Creates a transformation matrix for scaling by 3 scalar values, one for
