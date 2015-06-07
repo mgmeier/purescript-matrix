@@ -114,6 +114,19 @@ fromSTMat (STMat arr) = do
 toSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> Eff (st :: ST h | r) (STMat s h a)
 toSTMat m = STMat <$> thaw (M.toArray m)
 
+-- copyToSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
+
+foreign import copyToSTMat """
+    function copyToSTMat(m) {
+        return function(mst){
+            return function(){
+                for (var i=0; i<m.length; i++){
+                    mst[i] = m[i];
+                };
+            };
+        };
+    }""" :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
+
 
 identityST' :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
 identityST' =
