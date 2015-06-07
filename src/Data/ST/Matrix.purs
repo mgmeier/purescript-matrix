@@ -72,8 +72,8 @@ instance stm4 :: M.Matrix (STMat Four h) a where
 
 
 
--- try array cloning with .slice() instead of the for-loop 
--- implementation in Data.Array.ST. Needs benchmarking. 
+-- try array cloning with .slice() instead of the for-loop
+-- implementation in Data.Array.ST. Needs benchmarking.
 foreign import copyImpl """
     function copyImpl(arr) {
         return function(){
@@ -105,6 +105,15 @@ foreign import unsafeThaw """
 
 cloneSTMat :: forall s h a r. (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
+
+fromSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => (STMat s h a) -> Eff (st :: ST h | r) (M.Mat s a)
+fromSTMat (STMat arr) = do
+    x   <- freeze arr
+    return (M.fromArray x)
+
+toSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> Eff (st :: ST h | r) (STMat s h a)
+toSTMat m = STMat <$> thaw (M.toArray m)
+
 
 identityST' :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)
 identityST' =
@@ -169,4 +178,3 @@ foreign import runSTMatrix """
   function runSTMatrix(f) {
     return (f);
   }""" :: forall s a r. (forall h. Eff (st :: ST h | r) (STMat s h a)) -> Eff r (M.Mat s a)
-

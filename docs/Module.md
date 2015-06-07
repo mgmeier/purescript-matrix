@@ -449,6 +449,20 @@ cloneSTMat :: forall s h a r. STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
 ```
 
 
+#### `fromSTMat`
+
+``` purescript
+fromSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => STMat s h a -> Eff (st :: ST h | r) (M.Mat s a)
+```
+
+
+#### `toSTMat`
+
+``` purescript
+toSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => M.Mat s a -> Eff (st :: ST h | r) (STMat s h a)
+```
+
+
 #### `identityST'`
 
 ``` purescript
