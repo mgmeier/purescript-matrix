@@ -123,6 +123,7 @@ foreign import copyToSTMat """
                 for (var i=0; i<m.length; i++){
                     mst[i] = m[i];
                 };
+                return Prelude.unit;
             };
         };
     }""" :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
