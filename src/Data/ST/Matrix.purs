@@ -126,7 +126,7 @@ foreign import copyToSTMat """
                 return Prelude.unit;
             };
         };
-    }""" :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
+    }""" :: forall s h a r. (M.Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
 
 
 identityST' :: forall s h r. (M.Matrix (M.Mat s) Number) => Eff (st :: ST h | r) (STMat s h Number)

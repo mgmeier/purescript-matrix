@@ -466,7 +466,7 @@ toSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => M.Mat s a -> Eff (st :: ST 
 #### `copyToSTMat`
 
 ``` purescript
-copyToSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => M.Mat s a -> STMat s h a -> Eff (st :: ST h | r) Unit
+copyToSTMat :: forall s h a r. M.Mat s a -> STMat s h a -> Eff (st :: ST h | r) Unit
 ```
 
 #### `identityST'`
