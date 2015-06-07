@@ -217,7 +217,7 @@ foreign import rotateST """
 
              var m  = arr.slice();
              for (var i=0; i<4; i++){
-                 = m[i] * t11 + m[i+4] * t21 + m[i+8] * t31;
+                arr[i] = m[i] * t11 + m[i+4] * t21 + m[i+8] * t31;
                 arr[i+4] = m[i] * t12 + m[i+4] * t22 + m[i+8] * t32;
                 arr[i+8] = m[i] * t13 + m[i+4] * t23 + m[i+8] * t33;
              };
