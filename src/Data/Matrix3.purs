@@ -14,27 +14,25 @@
 
 module Data.Matrix3 where
 
+import Prelude
 import Data.TypeNat
 import Data.Matrix
 import Data.Maybe
-import qualified Data.Vector3 as V3
+import qualified Data.Vector3 as V
 import qualified Data.Vector as V
-
 import Data.Array
-import Prelude.Unsafe
 import Math
-
 
 type Mat3 = Mat Three Number
 
-mat3 :: [Number] -> Mat3
+mat3 :: Array Number -> Mat3
 mat3 = fromArray
 
 identity :: Mat3
 identity = Mat
-           [1,0,0,
-            0,1,0,
-            0,0,1]
+           [1.0,0.0,0.0,
+            0.0,1.0,0.0,
+            0.0,0.0,1.0]
 
 normalFromMat4 :: Mat Four Number -> Maybe Mat3
 normalFromMat4 (Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33]) =
@@ -53,7 +51,7 @@ normalFromMat4 (Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23,
         -- Calculate the determinant
       det_ = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06
 
-  in if (det_ == 0)
+  in if (det_ == 0.0)
         then Nothing
         else let det = 1.0 / det_
               in Just $ Mat [

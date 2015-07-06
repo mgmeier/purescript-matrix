@@ -25,5 +25,11 @@
     "purescript-vector" : "*",
     "purescript-arrays" : "*",
     "purescript-extensions" : "*"
-  }
+  },
+  "devDependencies": {
+      "purescript-assert": "*",
+      "purescript-console": "*",
+      "purescript-benchotron" : "*",
+      "purescript-random" : "*"
+    }
 }
