@@ -23,7 +23,6 @@ import Data.TypeNat
 import Data.Array.ST hiding (freeze, thaw)
 import Data.Array
 import Data.Monoid
-import Data.Function
 
 import Data.Maybe.Unsafe (fromJust)
 import Control.Apply
