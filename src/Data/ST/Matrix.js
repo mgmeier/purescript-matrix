@@ -2,7 +2,7 @@
 
 // module Data.ST.Matrix
 
-(function () {
+
     "use strict";
 
     exports.copyImpl = function(arr) {
@@ -47,4 +47,3 @@
     exports.runSTMatrix = function (f) {
         return (f);
     };
-})();

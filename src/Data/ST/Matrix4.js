@@ -2,7 +2,7 @@
 
 // module Data.ST.Matrix4
 
-(function () {
+
     "use strict";
 
     exports.identityST = function() {
@@ -84,4 +84,3 @@
                 };
             };
         };
-})();
