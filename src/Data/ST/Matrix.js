@@ -26,7 +26,7 @@
                 for (var i=0; i<m.length; i++){
                     mst[i] = m[i];
                 }
-                return Prelude.unit;
+                return {};
             };
         };
     };
