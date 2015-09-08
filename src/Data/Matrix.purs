@@ -23,7 +23,8 @@ import Data.Foldable
 import Data.Maybe.Unsafe (fromJust)
 import Control.Apply
 import Math
-import Extensions (undef)
+import Data.Generic (anyProxy, Proxy())
+import Extensions (fail)
 
 newtype Mat s a = Mat (Array a)
 
@@ -38,7 +39,7 @@ generate :: forall a s. (Sized s) =>
           (Int -> Int -> a) -- ^ Generator function
             -> Mat s a
 generate f =
-    let size = sized (undef :: s)
+    let size = sized (anyProxy :: Proxy s)
     in Mat $ concat $
         (\col -> (\row -> f col row)  <$> (range 0 (size - 1)))
             <$> (range 0 (size - 1))
@@ -51,18 +52,20 @@ instance showMat4 :: (Show a) => Show (Mat (Suc (Suc (Suc (Suc Zero)))) a) where
   show m = "Mat4x4 " ++ show (columns m)
 
 columns :: forall s a . (Sized s) => Mat s a -> Array (Array a)
-columns mat@(Mat m) | sized (undef :: s) == 2 =
+columns mat@(Mat m) | sized (anyProxy :: Proxy s) == 2 =
     [slice 0 2 m,
      slice 2 4 m]
-                    | sized (undef :: s) == 3 =
+                    | sized (anyProxy :: Proxy s) == 3 =
     [slice 0 3 m,
      slice 3 6 m,
      slice 6 9 m]
-                    | sized (undef :: s) == 4 =
+                    | sized (anyProxy :: Proxy s) == 4 =
   [slice 0 4 m,
    slice 4 8 m,
    slice 8 12 m,
    slice 12 16 m]
+                    | otherwise                        =
+    fail "Matrix>>columns: Proxy size not supprted!"
 
 instance eqMat :: (Eq a) => Eq (Mat s a) where
   eq (Mat l) (Mat r) = l == r
@@ -92,7 +95,7 @@ getElem :: forall s a. (Sized s) =>
         -> Int      -- ^ Column
         -> Mat s a     -- ^ Matrix
         -> a
-getElem i j m@(Mat l) = fromJust (l !! (i * sized (undef :: s) + j))
+getElem i j m@(Mat l) = fromJust (l !! (i * sized (anyProxy :: Proxy s) + j))
 
 -- | Scale a matrix by a given factor.
 --   Example:
@@ -105,9 +108,10 @@ scaleMatrix = (<$>) <<< (*)
 
 fromArray :: forall a s. (Sized s) => Array a -> Mat s a
 fromArray l =
-  let size = sized (undef :: s)
+  let size = sized (anyProxy :: Proxy s)
   in case size * size of
         i | i == length l -> Mat l
+          | otherwise     -> fail "Matrix>>fromArray: Wrong array length!"
 
 toArray :: forall s a. Mat s a -> Array a
 toArray (Mat a) = a
