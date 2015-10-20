@@ -44,11 +44,11 @@ generate f =
         (\col -> (\row -> f col row)  <$> (range 0 (size - 1)))
             <$> (range 0 (size - 1))
 
-instance showMat2 :: (Show a) => Show (Mat (Suc (Suc Zero)) a) where
+instance showMat2 :: (Show a) => Show (Mat Two a) where
   show m = "Mat2x2 " ++ show (columns m)
-instance showMat3 :: (Show a) => Show (Mat (Suc (Suc (Suc Zero))) a) where
+instance showMat3 :: (Show a) => Show (Mat Three a) where
   show m = "Mat3x3 " ++ show (columns m)
-instance showMat4 :: (Show a) => Show (Mat (Suc (Suc (Suc (Suc Zero)))) a) where
+instance showMat4 :: (Show a) => Show (Mat Four a) where
   show m = "Mat4x4 " ++ show (columns m)
 
 columns :: forall s a . (Sized s) => Mat s a -> Array (Array a)
