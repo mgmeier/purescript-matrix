@@ -86,7 +86,7 @@ instance applyMat :: Apply (Mat s) where
 -- >     ( 0 0 ... 1 0 )
 -- >   n ( 0 0 ... 0 1 )
 --
-identity' :: forall s a.  (Sized s) => Mat s Number
+identity' :: forall s.  (Sized s) => Mat s Number
 identity' = generate \ i j -> if i == j then 1.0 else 0.0
 
 -- | /O(1)/. Get an element of a matrix.
