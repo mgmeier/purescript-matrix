@@ -9,9 +9,9 @@ newtype Mat s a
 
 ##### Instances
 ``` purescript
-instance showMat2 :: (Show a) => Show (Mat (Suc (Suc Zero)) a)
-instance showMat3 :: (Show a) => Show (Mat (Suc (Suc (Suc Zero))) a)
-instance showMat4 :: (Show a) => Show (Mat (Suc (Suc (Suc (Suc Zero)))) a)
+instance showMat2 :: (Show a) => Show (Mat Two a)
+instance showMat3 :: (Show a) => Show (Mat Three a)
+instance showMat4 :: (Show a) => Show (Mat Four a)
 instance eqMat :: (Eq a) => Eq (Mat s a)
 instance functorMat :: Functor (Mat s)
 instance applyMat :: Apply (Mat s)
@@ -32,7 +32,7 @@ columns :: forall s a. (Sized s) => Mat s a -> Array (Array a)
 #### `identity'`
 
 ``` purescript
-identity' :: forall s a. (Sized s) => Mat s Number
+identity' :: forall s. (Sized s) => Mat s Number
 ```
 
 #### `getElem`
