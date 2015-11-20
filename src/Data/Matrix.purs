@@ -23,7 +23,7 @@ import Data.Foldable
 import Data.Maybe.Unsafe (fromJust)
 import Control.Apply
 import Math
-import Data.Generic (anyProxy, Proxy())
+import Type.Proxy
 import Extensions (fail)
 
 newtype Mat s a = Mat (Array a)
@@ -39,7 +39,7 @@ generate :: forall a s. (Sized s) =>
           (Int -> Int -> a) -- ^ Generator function
             -> Mat s a
 generate f =
-    let size = sized (anyProxy :: Proxy s)
+    let size = sized (Proxy :: Proxy s)
     in Mat $ concat $
         (\col -> (\row -> f col row)  <$> (range 0 (size - 1)))
             <$> (range 0 (size - 1))
@@ -52,14 +52,14 @@ instance showMat4 :: (Show a) => Show (Mat Four a) where
   show m = "Mat4x4 " ++ show (columns m)
 
 columns :: forall s a . (Sized s) => Mat s a -> Array (Array a)
-columns mat@(Mat m) | sized (anyProxy :: Proxy s) == 2 =
+columns mat@(Mat m) | sized (Proxy :: Proxy s) == 2 =
     [slice 0 2 m,
      slice 2 4 m]
-                    | sized (anyProxy :: Proxy s) == 3 =
+                    | sized (Proxy :: Proxy s) == 3 =
     [slice 0 3 m,
      slice 3 6 m,
      slice 6 9 m]
-                    | sized (anyProxy :: Proxy s) == 4 =
+                    | sized (Proxy :: Proxy s) == 4 =
   [slice 0 4 m,
    slice 4 8 m,
    slice 8 12 m,
@@ -95,7 +95,7 @@ getElem :: forall s a. (Sized s) =>
         -> Int      -- ^ Column
         -> Mat s a     -- ^ Matrix
         -> a
-getElem i j m@(Mat l) = fromJust (l !! (i * sized (anyProxy :: Proxy s) + j))
+getElem i j m@(Mat l) = fromJust (l !! (i * sized (Proxy :: Proxy s) + j))
 
 -- | Scale a matrix by a given factor.
 --   Example:
@@ -108,7 +108,7 @@ scaleMatrix = (<$>) <<< (*)
 
 fromArray :: forall a s. (Sized s) => Array a -> Mat s a
 fromArray l =
-  let size = sized (anyProxy :: Proxy s)
+  let size = sized (Proxy :: Proxy s)
   in case size * size of
         i | i == length l -> Mat l
           | otherwise     -> fail "Matrix>>fromArray: Wrong array length!"
