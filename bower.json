@@ -29,7 +29,7 @@
     "purescript-vector" : "*",
     "purescript-arrays" : "*",
     "purescript-extensions" : "*",
-    "purescript-generics" : "*"
+    "purescript-proxy" : "*"
   },
   "devDependencies": {
       "purescript-assert": "*",
