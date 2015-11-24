@@ -18,14 +18,9 @@ import Prelude
 import Data.TypeNat
 import Data.Matrix4 (Vec3N())
 import Data.ST.Matrix
-import qualified Data.Vector3 as V3
-import qualified Data.Vector as V
 import Control.Monad.Eff
 import Control.Monad.ST (ST())
--- import Control.Apply
-import Data.Array
 import Data.Array.ST hiding (freeze, thaw)
-import Math
 
 
 type STMat4 h = STMat Four h Number

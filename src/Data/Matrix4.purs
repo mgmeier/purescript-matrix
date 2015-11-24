@@ -20,7 +20,6 @@ import Data.Matrix
 import qualified Data.Vector3 as V
 import qualified Data.Vector4 as V
 import qualified Data.Vector as V
-import Data.Array
 import Data.Maybe
 import Math
 import Extensions (fail)
@@ -438,7 +437,7 @@ unProject (V.Vec [winx,winy,winz])
                                 then Nothing
                                 else let out3' = 1.0 / out3
                                      in Just (V.Vec [out0 * out3',out1 * out3',out2 * out3'])
-                        _ -> fail "Matrix4>>unProject: Impossible!"                  
+                        _ -> fail "Matrix4>>unProject: Impossible!"
 unProject _ _ _ _ = fail "Matrix4>>unProject: Impossible!"
 
 mulMatVect :: Mat4 -> Vec4N -> Vec4N

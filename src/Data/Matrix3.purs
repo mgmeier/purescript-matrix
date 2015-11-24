@@ -18,10 +18,6 @@ import Prelude
 import Data.TypeNat
 import Data.Matrix
 import Data.Maybe
-import qualified Data.Vector3 as V
-import qualified Data.Vector as V
-import Data.Array
-import Math
 import Extensions (fail)
 
 type Mat3 = Mat Three Number

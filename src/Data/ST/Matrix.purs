@@ -21,17 +21,10 @@ import Control.Monad.ST (ST())
 
 import Data.TypeNat
 import Data.Array.ST hiding (freeze, thaw)
-import Data.Array
-import Data.Monoid
 
-import Data.Maybe.Unsafe (fromJust)
 import Control.Apply
 
-import qualified Data.Vector as V
 import qualified Data.Matrix as M
-import qualified Data.Matrix4 as M
-
-import Math
 
 
 newtype STMat s h a = STMat (STArray h a)

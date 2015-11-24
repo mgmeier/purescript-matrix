@@ -16,13 +16,8 @@ module Data.Matrix where
 
 import Prelude
 import Data.TypeNat
-import qualified Data.Vector as V
 import Data.Array
-import Data.Monoid
-import Data.Foldable
 import Data.Maybe.Unsafe (fromJust)
-import Control.Apply
-import Math
 import Type.Proxy
 import Extensions (fail)
 
