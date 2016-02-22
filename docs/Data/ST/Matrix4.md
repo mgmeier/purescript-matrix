@@ -1,5 +1,7 @@
 ## Module Data.ST.Matrix4
 
+Inspired by Mjs library for javascript
+
 #### `STMat4`
 
 ``` purescript

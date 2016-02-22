@@ -14,11 +14,11 @@
 
 module Data.Matrix where
 
-import Prelude
-import Data.TypeNat
-import Data.Array
+import Prelude (class Num, class Apply, class Functor, class Eq, class Show, ($), otherwise, (==), (*), (<$>), (<<<), (+), map, show, (++), (-))
+import Data.TypeNat (class Sized, Four, Three, Two, sized)
+import Data.Array (length, (!!), zipWith, slice, range, concat)
 import Data.Maybe.Unsafe (fromJust)
-import Type.Proxy
+import Type.Proxy (Proxy(Proxy))
 import Extensions (fail)
 
 newtype Mat s a = Mat (Array a)

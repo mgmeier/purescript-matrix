@@ -1,5 +1,7 @@
 ## Module Data.Matrix3
 
+Matrix manipulation for WebGL
+
 #### `Mat3`
 
 ``` purescript

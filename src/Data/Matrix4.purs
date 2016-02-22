@@ -14,14 +14,14 @@
 
 module Data.Matrix4 where
 
-import Prelude
-import Data.TypeNat
-import Data.Matrix
-import qualified Data.Vector3 as V
-import qualified Data.Vector4 as V
-import qualified Data.Vector as V
-import Data.Maybe
-import Math
+import Prelude ((*), (+), (/), (==), (-), negate, ($))
+import Data.TypeNat (Four)
+import Data.Matrix (Mat(Mat), transpose, fromArray)
+import Data.Vector3 as V
+import Data.Vector4 as V
+import Data.Vector as V
+import Data.Maybe (Maybe(Just, Nothing))
+import Math (sin, cos, sqrt, pi, tan)
 import Extensions (fail)
 
 

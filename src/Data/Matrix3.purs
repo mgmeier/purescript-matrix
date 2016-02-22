@@ -14,10 +14,10 @@
 
 module Data.Matrix3 where
 
-import Prelude
-import Data.TypeNat
-import Data.Matrix
-import Data.Maybe
+import Prelude ((*), (+), (-), ($), (/), (==))
+import Data.TypeNat (Four, Three)
+import Data.Matrix (Mat(Mat), fromArray)
+import Data.Maybe (Maybe(Just, Nothing))
 import Extensions (fail)
 
 type Mat3 = Mat Three Number

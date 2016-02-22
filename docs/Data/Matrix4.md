@@ -1,5 +1,7 @@
 ## Module Data.Matrix4
 
+Inspired by Mjs library for javascript
+
 #### `Vec3N`
 
 ``` purescript
@@ -44,6 +46,8 @@ Multiply a V.Vector by a 4x4 matrix: m * v
 inverseOrthonormal :: Mat4 -> Mat4
 ```
 
+Computes the inverse of the given matrix m, assuming that the matrix is
+
 #### `inverse`
 
 ``` purescript
@@ -56,11 +60,15 @@ inverse :: Mat4 -> Maybe Mat4
 makeFrustum :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
 ```
 
+Creates a matrix for a projection frustum with the given parameters.
+
 #### `makePerspective`
 
 ``` purescript
 makePerspective :: Number -> Number -> Number -> Number -> Mat4
 ```
+
+Creates a matrix for a perspective projection with the given parameters.
 
 #### `makeOrtho`
 
@@ -68,11 +76,15 @@ makePerspective :: Number -> Number -> Number -> Number -> Mat4
 makeOrtho :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
 ```
 
+Creates a matrix for an orthogonal frustum projection with the given parameters.
+
 #### `makeOrtho2D`
 
 ``` purescript
 makeOrtho2D :: Number -> Number -> Number -> Number -> Mat4
 ```
+
+Creates a matrix for a 2D orthogonal frustum projection with the given
 
 #### `mulM`
 
@@ -112,11 +124,15 @@ Concatenates a rotation in radians about an axis to the given matrix.
 makeScale3 :: Number -> Number -> Number -> Mat4
 ```
 
+Creates a transformation matrix for scaling by 3 scalar values, one for
+
 #### `makeScale`
 
 ``` purescript
 makeScale :: Vec3N -> Mat4
 ```
+
+Creates a transformation matrix for scaling each of the x, y, and z axes by
 
 #### `scale3`
 
@@ -140,11 +156,15 @@ Concatenates a scaling to the given matrix.
 makeTranslate3 :: Number -> Number -> Number -> Mat4
 ```
 
+Creates a transformation matrix for translating by 3 scalar values, one for
+
 #### `makeTranslate`
 
 ``` purescript
 makeTranslate :: Vec3N -> Mat4
 ```
+
+Creates a transformation matrix for translating each of the x, y, and z
 
 #### `translate3`
 
@@ -167,6 +187,8 @@ Concatenates a translation to the given matrix.
 ``` purescript
 makeLookAt :: Vec3N -> Vec3N -> Vec3N -> Mat4
 ```
+
+Creates a transformation matrix for a camera.
 
 #### `makeBasis`
 

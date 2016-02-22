@@ -1,5 +1,7 @@
 ## Module Data.ST.Matrix
 
+Binding to mjs library
+
 #### `STMat`
 
 ``` purescript

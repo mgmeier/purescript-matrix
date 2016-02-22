@@ -14,14 +14,12 @@
 
 module Data.ST.Matrix4 where
 
-import Prelude
-import Data.TypeNat
+import Prelude (Unit)
+import Data.TypeNat (Four)
 import Data.Matrix4 (Vec3N())
-import Data.ST.Matrix
-import Control.Monad.Eff
+import Data.ST.Matrix (STMat)
+import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
-import Data.Array.ST hiding (freeze, thaw)
-
 
 type STMat4 h = STMat Four h Number
 

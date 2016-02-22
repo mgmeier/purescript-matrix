@@ -1,5 +1,7 @@
 ## Module Data.Matrix
 
+Binding to mjs library
+
 #### `Mat`
 
 ``` purescript
@@ -9,12 +11,12 @@ newtype Mat s a
 
 ##### Instances
 ``` purescript
-instance showMat2 :: (Show a) => Show (Mat Two a)
-instance showMat3 :: (Show a) => Show (Mat Three a)
-instance showMat4 :: (Show a) => Show (Mat Four a)
-instance eqMat :: (Eq a) => Eq (Mat s a)
-instance functorMat :: Functor (Mat s)
-instance applyMat :: Apply (Mat s)
+(Show a) => Show (Mat Two a)
+(Show a) => Show (Mat Three a)
+(Show a) => Show (Mat Four a)
+(Eq a) => Eq (Mat s a)
+Functor (Mat s)
+Apply (Mat s)
 ```
 
 #### `generate`
@@ -22,6 +24,8 @@ instance applyMat :: Apply (Mat s)
 ``` purescript
 generate :: forall a s. (Sized s) => (Int -> Int -> a) -> Mat s a
 ```
+
+/O(rows*cols)/. Generate a matrix from a generator function.
 
 #### `columns`
 
@@ -34,6 +38,8 @@ columns :: forall s a. (Sized s) => Mat s a -> Array (Array a)
 ``` purescript
 identity' :: forall s. (Sized s) => Mat s Number
 ```
+
+/O(rows*cols)/. Identity matrix of the given order.
 
 #### `getElem`
 
@@ -48,6 +54,8 @@ getElem :: forall s a. (Sized s) => Int -> Int -> Mat s a -> a
 ``` purescript
 scaleMatrix :: forall a s. (Num a) => a -> Mat s a -> Mat s a
 ```
+
+Scale a matrix by a given factor.
 
 #### `fromArray`
 
@@ -66,5 +74,7 @@ toArray :: forall s a. Mat s a -> Array a
 ``` purescript
 transpose :: forall a s. (Sized s) => Mat s a -> Mat s a
 ```
+
+/O(rows*cols)/. The transpose of a matrix.
 
 
