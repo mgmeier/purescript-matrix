@@ -17,9 +17,9 @@ module Data.Matrix4 where
 import Prelude ((*), (+), (/), (==), (-), negate, ($))
 import Data.TypeNat (Four)
 import Data.Matrix (Mat(Mat), transpose, fromArray)
-import Data.Vector3 as V
-import Data.Vector4 as V
-import Data.Vector as V
+import Data.Vector3 (Vec3, cross) as V
+import Data.Vector4 (Vec4) as V
+import Data.Vector (Vec(Vec), normalize, direction, dot) as V
 import Data.Maybe (Maybe(Just, Nothing))
 import Math (sin, cos, sqrt, pi, tan)
 import Extensions (fail)

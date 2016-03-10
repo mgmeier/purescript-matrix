@@ -18,11 +18,9 @@ import Prelude (class Num, Unit, (<$>), return, bind, (<<<))
 import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
 import Data.TypeNat (class Sized)
-import Data.Array.ST hiding (freeze, thaw)
+import Data.Array.ST (STArray)
 import Control.Apply ((*>))
-import qualified Data.Matrix as M
-
-
+import Data.Matrix as M
 
 
 newtype STMat s h a = STMat (STArray h a)
