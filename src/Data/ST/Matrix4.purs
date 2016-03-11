@@ -27,6 +27,12 @@ foreign import identityST  :: forall h r. Eff (st :: ST h | r) (STMat Four h Num
 
 foreign import rotateST  :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit
 
+foreign import rotateSTX  :: forall h r. Number -> STMat4 h -> Eff (st :: ST h | r) Unit
+
+foreign import rotateSTY  :: forall h r. Number -> STMat4 h -> Eff (st :: ST h | r) Unit
+
+foreign import rotateSTZ  :: forall h r. Number -> STMat4 h -> Eff (st :: ST h | r) Unit
+
 -- generic type was :: forall h r. Number -> [Number] -> STArray h Number -> Eff (st :: ST h | r) Unit
 
 foreign import translateST  :: forall h r. Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit

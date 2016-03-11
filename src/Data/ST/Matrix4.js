@@ -49,6 +49,82 @@
       };
     };
 
+    exports.rotateSTX = function(angle) {
+        return function(arr){
+           return function(){
+             var cosAngle    = Math.cos (angle);
+             var sinAngle    = Math.sin (angle);
+             var t1 = arr[4] * cosAngle + arr[8] * sinAngle;
+             var t2 = arr[5] * cosAngle + arr[9] * sinAngle;
+             var t3 = arr[6] * cosAngle + arr[10] * sinAngle;
+             var t4 = arr[7] * cosAngle + arr[11] * sinAngle;
+             var t5 = arr[4] * -sinAngle + arr[8] * cosAngle;
+             var t6 = arr[5] * -sinAngle + arr[9] * cosAngle;
+             var t7 = arr[6] * -sinAngle + arr[10] * cosAngle;
+             var t8 = arr[7] * -sinAngle + arr[11] * cosAngle;
+             arr[4] = t1;
+             arr[5] = t2;
+             arr[6] = t3;
+             arr[7] = t4;
+             arr[8] = t5;
+             arr[9] = t6;
+             arr[10] = t7;
+             arr[11] = t8;
+         };
+        };
+    };
+
+    exports.rotateSTY = function(angle) {
+        return function(arr){
+           return function(){
+             var cosAngle    = Math.cos (angle);
+             var sinAngle    = Math.sin (angle);
+             var t1 = arr[0] * cosAngle + arr[8] * -sinAngle;
+             var t2 = arr[1] * cosAngle + arr[9] * -sinAngle;
+             var t3 = arr[2] * cosAngle + arr[10] * -sinAngle;
+             var t4 = arr[3] * cosAngle + arr[11] * -sinAngle;
+             var t5 = arr[0] * sinAngle + arr[8] * cosAngle;
+             var t6 = arr[1] * sinAngle + arr[9] * cosAngle;
+             var t7 = arr[2] * sinAngle + arr[10] * cosAngle;
+             var t8 = arr[3] * sinAngle + arr[11] * cosAngle;
+             arr[0] = t1;
+             arr[1] = t2;
+             arr[2] = t3;
+             arr[3] = t4;
+             arr[8] = t5;
+             arr[9] = t6;
+             arr[10] = t7;
+             arr[11] = t8;
+           };
+        };
+    };
+
+    exports.rotateSTZ = function(angle) {
+        return function(arr){
+           return function(){
+             var cosAngle    = Math.cos (angle);
+             var sinAngle    = Math.sin (angle);
+             var t1 = arr[0] * cosAngle + arr[4] * sinAngle;
+             var t2 = arr[1] * cosAngle + arr[5] * sinAngle;
+             var t3 = arr[2] * cosAngle + arr[6] * sinAngle;
+             var t4 = arr[3] * cosAngle + arr[7] * sinAngle;
+             var t5 = arr[0] * -sinAngle + arr[4] * cosAngle;
+             var t6 = arr[1] * -sinAngle + arr[5] * cosAngle;
+             var t7 = arr[2] * -sinAngle + arr[6] * cosAngle;
+             var t8 = arr[3] * -sinAngle + arr[7] * cosAngle;
+             arr[0] = t1;
+             arr[1] = t2;
+             arr[2] = t3;
+             arr[3] = t4;
+             arr[4] = t5;
+             arr[5] = t6;
+             arr[6] = t7;
+             arr[7] = t8;
+         };
+        };
+    };
+
+
     exports.translateST = function(a) {
       return function(m){
            return function(){
