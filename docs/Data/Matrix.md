@@ -22,7 +22,7 @@ Apply (Mat s)
 #### `generate`
 
 ``` purescript
-generate :: forall a s. (Sized s) => (Int -> Int -> a) -> Mat s a
+generate :: forall a s. Sized s => (Int -> Int -> a) -> Mat s a
 ```
 
 /O(rows*cols)/. Generate a matrix from a generator function.
@@ -30,13 +30,13 @@ generate :: forall a s. (Sized s) => (Int -> Int -> a) -> Mat s a
 #### `columns`
 
 ``` purescript
-columns :: forall s a. (Sized s) => Mat s a -> Array (Array a)
+columns :: forall s a. Sized s => Mat s a -> Array (Array a)
 ```
 
 #### `identity'`
 
 ``` purescript
-identity' :: forall s. (Sized s) => Mat s Number
+identity' :: forall s. Sized s => Mat s Number
 ```
 
 /O(rows*cols)/. Identity matrix of the given order.
@@ -44,7 +44,7 @@ identity' :: forall s. (Sized s) => Mat s Number
 #### `getElem`
 
 ``` purescript
-getElem :: forall s a. (Sized s) => Int -> Int -> Mat s a -> a
+getElem :: forall s a. Sized s => Int -> Int -> Mat s a -> a
 ```
 
 /O(1)/. Get an element of a matrix.
@@ -52,7 +52,7 @@ getElem :: forall s a. (Sized s) => Int -> Int -> Mat s a -> a
 #### `scaleMatrix`
 
 ``` purescript
-scaleMatrix :: forall a s. (Num a) => a -> Mat s a -> Mat s a
+scaleMatrix :: forall a s. EuclideanRing a => a -> Mat s a -> Mat s a
 ```
 
 Scale a matrix by a given factor.
@@ -60,7 +60,7 @@ Scale a matrix by a given factor.
 #### `fromArray`
 
 ``` purescript
-fromArray :: forall a s. (Sized s) => Array a -> Mat s a
+fromArray :: forall a s. Sized s => Array a -> Mat s a
 ```
 
 #### `toArray`
@@ -72,7 +72,7 @@ toArray :: forall s a. Mat s a -> Array a
 #### `transpose`
 
 ``` purescript
-transpose :: forall a s. (Sized s) => Mat s a -> Mat s a
+transpose :: forall a s. Sized s => Mat s a -> Mat s a
 ```
 
 /O(rows*cols)/. The transpose of a matrix.

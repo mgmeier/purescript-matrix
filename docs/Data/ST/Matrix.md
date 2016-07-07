@@ -48,43 +48,43 @@ unsafeThaw :: forall a h. Array a -> STArray h a
 #### `cloneSTMat`
 
 ``` purescript
-cloneSTMat :: forall s h a r. STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+cloneSTMat :: forall s h a r. (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 ```
 
 #### `fromSTMat`
 
 ``` purescript
-fromSTMat :: forall s h a r. (Sized s) => STMat s h a -> Eff (st :: ST h | r) (Mat s a)
+fromSTMat :: forall s h a r. Sized s => (STMat s h a) -> Eff (st :: ST h | r) (Mat s a)
 ```
 
 #### `toSTMat`
 
 ``` purescript
-toSTMat :: forall s h a r. Mat s a -> Eff (st :: ST h | r) (STMat s h a)
+toSTMat :: forall s h a r. (Mat s a) -> Eff (st :: ST h | r) (STMat s h a)
 ```
 
 #### `copyToSTMat`
 
 ``` purescript
-copyToSTMat :: forall s h a r. Mat s a -> STMat s h a -> Eff (st :: ST h | r) Unit
+copyToSTMat :: forall s h a r. (Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
 ```
 
 #### `identityST'`
 
 ``` purescript
-identityST' :: forall s h r. (Sized s) => Eff (st :: ST h | r) (STMat s h Number)
+identityST' :: forall s h r. Sized s => Eff (st :: ST h | r) (STMat s h Number)
 ```
 
 #### `scaleSTMatrixInt`
 
 ``` purescript
-scaleSTMatrixInt :: forall a h r. (Num a) => a -> STArray h a -> Eff (st :: ST h | r) Unit
+scaleSTMatrixInt :: forall a h r. EuclideanRing a => a -> STArray h a -> Eff (st :: ST h | r) Unit
 ```
 
 #### `scaleSTMatrix`
 
 ``` purescript
-scaleSTMatrix :: forall s a h r. (Num a) => a -> STMat s h a -> Eff (st :: ST h | r) (STMat s h a)
+scaleSTMatrix :: forall s a h r. EuclideanRing a => a -> (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
 ```
 
 #### `fromMatrix`

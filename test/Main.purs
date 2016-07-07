@@ -5,7 +5,7 @@ import Prelude
 import Data.Matrix4 (Mat4, Vec3N, identity, translate, rotate) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
 import Data.ST.Matrix (runSTMatrix) as M
-import  Data.Vector as V
+import Data.Vector as V
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
