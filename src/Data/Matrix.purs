@@ -14,12 +14,13 @@
 
 module Data.Matrix where
 
-import Prelude (class Num, class Apply, class Functor, class Eq, class Show, ($), otherwise, (==), (*), (<$>), (<<<), (+), map, show, (++), (-))
-import Data.TypeNat (class Sized, Four, Three, Two, sized)
+import Prelude
 import Data.Array (length, (!!), zipWith, slice, range, concat)
-import Data.Maybe.Unsafe (fromJust)
+import Data.Maybe (fromJust)
+import Data.TypeNat (class Sized, Four, Three, Two, sized)
 import Type.Proxy (Proxy(Proxy))
 import Extensions (fail)
+import Partial.Unsafe (unsafePartial)
 
 newtype Mat s a = Mat (Array a)
 
@@ -40,11 +41,11 @@ generate f =
             <$> (range 0 (size - 1))
 
 instance showMat2 :: (Show a) => Show (Mat Two a) where
-  show m = "Mat2x2 " ++ show (columns m)
+  show m = "Mat2x2 " <> show (columns m)
 instance showMat3 :: (Show a) => Show (Mat Three a) where
-  show m = "Mat3x3 " ++ show (columns m)
+  show m = "Mat3x3 " <> show (columns m)
 instance showMat4 :: (Show a) => Show (Mat Four a) where
-  show m = "Mat4x4 " ++ show (columns m)
+  show m = "Mat4x4 " <> show (columns m)
 
 columns :: forall s a . (Sized s) => Mat s a -> Array (Array a)
 columns mat@(Mat m) | sized (Proxy :: Proxy s) == 2 =
@@ -90,7 +91,7 @@ getElem :: forall s a. (Sized s) =>
         -> Int      -- ^ Column
         -> Mat s a     -- ^ Matrix
         -> a
-getElem i j m@(Mat l) = fromJust (l !! (i * sized (Proxy :: Proxy s) + j))
+getElem i j m@(Mat l) = unsafePartial $ fromJust (l !! (i * sized (Proxy :: Proxy s) + j))
 
 -- | Scale a matrix by a given factor.
 --   Example:
@@ -98,7 +99,7 @@ getElem i j m@(Mat l) = fromJust (l !! (i * sized (Proxy :: Proxy s) + j))
 -- >               ( 1 2 3 )   (  2  4  6 )
 -- >               ( 4 5 6 )   (  8 10 12 )
 -- > scaleMatrix 2 ( 7 8 9 ) = ( 14 16 18 )
-scaleMatrix ::  forall a s. (Num a) => a -> Mat s a -> Mat s a
+scaleMatrix ::  forall a s. (EuclideanRing a) => a -> Mat s a -> Mat s a
 scaleMatrix = (<$>) <<< (*)
 
 fromArray :: forall a s. (Sized s) => Array a -> Mat s a

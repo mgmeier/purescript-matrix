@@ -14,7 +14,7 @@
 
 module Data.ST.Matrix where
 
-import Prelude (class Num, Unit, (<$>), return, bind, (<<<))
+import Prelude
 import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
 import Data.TypeNat (class Sized)
@@ -48,7 +48,7 @@ cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
 fromSTMat :: forall s h a r. (Sized s) => (STMat s h a) -> Eff (st :: ST h | r) (M.Mat s a)
 fromSTMat (STMat arr) = do
     x   <- freeze arr
-    return (M.fromArray x)
+    pure (M.fromArray x)
 
 toSTMat :: forall s h a r. (M.Mat s a) -> Eff (st :: ST h | r) (STMat s h a)
 toSTMat m = STMat <$> thaw (M.toArray m)
@@ -62,10 +62,10 @@ identityST' =
     let m = M.identity' :: M.Mat s Number
     in STMat <$> thaw (M.toArray m)
 
-foreign import scaleSTMatrixInt :: forall a h r. (Num a) => a -> STArray h a -> Eff (st :: ST h | r) Unit
+foreign import scaleSTMatrixInt :: forall a h r. (EuclideanRing a) => a -> STArray h a -> Eff (st :: ST h | r) Unit
 
-scaleSTMatrix :: forall s a h r. (Num a) => a -> (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
-scaleSTMatrix x v@(STMat arr) = scaleSTMatrixInt x arr *> return v
+scaleSTMatrix :: forall s a h r. (EuclideanRing a) => a -> (STMat s h a) -> Eff (st :: ST h | r) (STMat s h a)
+scaleSTMatrix x v@(STMat arr) = scaleSTMatrixInt x arr *> pure v
 
 fromMatrix :: forall s h r a. M.Mat s a -> Eff (st :: ST h | r) (STMat s h a)
 fromMatrix (M.Mat m) = STMat <$> thaw m

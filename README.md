@@ -7,11 +7,3 @@ This module should be imported qualified, like:
 import Data.Matrix as M
 import Data.Matrix4 as M
 ~~~
-
-
-## Build with:
-~~~
-npm install
-pulp dep install
-pulp build
-~~~

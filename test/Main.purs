@@ -2,16 +2,14 @@
 module Test.Main where
 
 import Prelude
-import qualified Data.Matrix4 as M
-import qualified Data.ST.Matrix4 as M
-import qualified Data.Matrix as M
-import qualified Data.ST.Matrix as M
-import qualified Data.Vector as V
+import Data.Matrix4 (Mat4, Vec3N, identity, translate, rotate) as M
+import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
+import Data.ST.Matrix (runSTMatrix) as M
+import  Data.Vector as V
 
-import Control.Monad.Eff
+import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
-import Control.Apply
-import Control.Monad.Eff.Console (print)
+import Control.Monad.Eff.Console (logShow, CONSOLE)
 
 
 ble :: forall h r . Eff (st :: ST h | r) (M.STMat4 h)
@@ -28,13 +26,14 @@ ys = M.rotate 90.0 meh $ M.identity
 zs :: M.Mat4
 zs = M.translate meh $ M.identity
 
+main ::  forall eff. Eff (console :: CONSOLE | eff) Unit
 main = do
 
-    xs <- M.runSTMatrix (ble >>= \m -> M.rotateST 90.0 meh m *> return m)
-    bs <- M.runSTMatrix (ble >>= \m -> M.translateST meh m *> return m)
+    xs <- M.runSTMatrix (ble >>= \m -> M.rotateST 90.0 meh m *> pure m)
+    bs <- M.runSTMatrix (ble >>= \m -> M.translateST meh m *> pure m)
 
-    print xs
-    print ys
+    logShow xs
+    logShow ys
 
-    print bs
-    print zs
+    logShow bs
+    logShow zs
