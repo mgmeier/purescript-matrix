@@ -1,4 +1,4 @@
-.psci
+.psc*
 .psci_modules/
 bower_components/
 node_modules/

@@ -19,7 +19,6 @@ import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
 import Data.TypeNat (class Sized)
 import Data.Array.ST (STArray)
-import Control.Apply ((*>))
 import Data.Matrix as M
 
 
