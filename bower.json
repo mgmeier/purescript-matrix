@@ -26,9 +26,9 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-vector": "^1.1.0",
-    "purescript-arrays": "^3.0.0",
-    "purescript-extensions": "^1.1.0",
+    "purescript-vector": "^1.2.0",
+    "purescript-arrays": "^3.1.0",
+    "purescript-extensions": "^1.2.1",
     "purescript-proxy": "^1.0.0"
   },
   "devDependencies": {
