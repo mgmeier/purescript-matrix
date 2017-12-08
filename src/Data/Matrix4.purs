@@ -151,16 +151,19 @@ makePerspective fovy aspect znear zfar =
 -- * zfar - the far z distance of the frustum
 makeOrtho :: Number -> Number -> Number -> Number -> Number -> Number -> Mat4
 makeOrtho left right bottom top znear zfar =
-  let tX = -(right+left)/(right-left)
-      tY = -(top+bottom)/(top-bottom)
-      tZ = -(zfar+znear)/(zfar-znear)
-      x = 2.0 / (right-left)
-      y = 2.0 / (top-bottom)
-      z = -2.0 / (zfar-znear)
-  in Mat [x,0.0,0.0,0.0,
-          0.0,y,0.0,0.0,
-          0.0,0.0,z,0.0,
-          tX,tY,tZ,1.0]
+  Mat [ x, 0.0, 0.0, 0.0,
+        0.0, y, 0.0, 0.0,
+        0.0, 0.0, z, 0.0,
+        tX, tY, tZ, 1.0
+      ]
+  where
+    tX = -(right+left)/(right-left)
+    tY = -(top+bottom)/(top-bottom)
+    tZ = -(zfar+znear)/(zfar-znear)
+    x = 2.0 / (right-left)
+    y = 2.0 / (top-bottom)
+    z = -2.0 / (zfar-znear)
+
 
 
 -- | Creates a matrix for a 2D orthogonal frustum projection with the given
