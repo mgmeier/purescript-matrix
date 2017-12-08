@@ -133,11 +133,12 @@ makeFrustum left right bottom top znear zfar =
 -- * zfar - the far z distance of the projection
 makePerspective :: Number -> Number -> Number -> Number -> Mat4
 makePerspective fovy aspect znear zfar =
-  let ymax = znear * tan(fovy * pi / 360.0)
-      ymin = -ymax
-      xmin = ymin * aspect
-      xmax = ymax * aspect
-  in makeFrustum xmin xmax ymin ymax znear zfar
+  makeFrustum xmin xmax ymin ymax znear zfar
+  where
+    ymax = znear * tan(fovy * pi / 360.0)
+    ymin = -ymax
+    xmin = ymin * aspect
+    xmax = ymax * aspect
 
 
 -- | Creates a matrix for an orthogonal frustum projection with the given parameters.
