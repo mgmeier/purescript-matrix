@@ -238,44 +238,49 @@ makeRotate angle axis =
 
 -- | Concatenates a rotation in radians about an axis to the given matrix.
 rotate :: Number -> Vec3N -> Mat4 -> Mat4
-rotate angle (V.Vec [a0,a1,a2])
-    (Mat [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44]) =
-  let l = sqrt (a0*a0 + a1*a1 + a2*a2)
-      im = 1.0 / l
-      x = a0 * im
-      y = a1 * im
-      z = a2 * im
-      c = cos angle
-      c1 = 1.0-c
-      s = sin angle
-      xs = x*s
-      ys = y*s
-      zs = z*s
-      xyc1 = x * y * c1
-      xzc1 = x * z * c1
-      yzc1 = y * z * c1
-      t11 = x * x * c1 + c
-      t21 = xyc1 + zs
-      t31 = xzc1 - ys
-      t12 = xyc1 - zs
-      t22 = y * y * c1 + c
-      t32 = yzc1 + xs
-      t13 = xzc1 + ys
-      t23 = yzc1 - xs
-      t33 = z * z * c1 + c
-  in Mat [m11 * t11 + m12 * t21 + m13 * t31,
-            m21 * t11 + m22 * t21 + m23 * t31,
-              m31 * t11 + m32 * t21 + m33 * t31,
-                m41 * t11 + m42 * t21 + m43 * t31,
-          m11 * t12 + m12 * t22 + m13 * t32,
-            m21 * t12 + m22 * t22 + m23 * t32,
-              m31 * t12 + m32 * t22 + m33 * t32,
-                m41 * t12 + m42 * t22 + m43 * t32,
-          m11 * t13 + m12 * t23 + m13 * t33,
-            m21 * t13 + m22 * t23 + m23 * t33,
-              m31 * t13 + m32 * t23 + m33 * t33,
-                m41 * t13 + m42 * t23 + m43 * t33,
-          m14,m24,m34,m44]
+rotate angle (V.Vec [a0, a1, a2]) (Mat [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44]) =
+  Mat [ m11 * t11 + m12 * t21 + m13 * t31,
+        m21 * t11 + m22 * t21 + m23 * t31,
+        m31 * t11 + m32 * t21 + m33 * t31,
+        m41 * t11 + m42 * t21 + m43 * t31,
+
+        m11 * t12 + m12 * t22 + m13 * t32,
+        m21 * t12 + m22 * t22 + m23 * t32,
+        m31 * t12 + m32 * t22 + m33 * t32,
+        m41 * t12 + m42 * t22 + m43 * t32,
+
+        m11 * t13 + m12 * t23 + m13 * t33,
+        m21 * t13 + m22 * t23 + m23 * t33,
+        m31 * t13 + m32 * t23 + m33 * t33,
+        m41 * t13 + m42 * t23 + m43 * t33,
+
+        m14, m24, m34, m44
+      ]
+  where
+    l = sqrt (a0*a0 + a1*a1 + a2*a2)
+    im = 1.0 / l
+    x = a0 * im
+    y = a1 * im
+    z = a2 * im
+    c = cos angle
+    c1 = 1.0-c
+    s = sin angle
+    xs = x*s
+    ys = y*s
+    zs = z*s
+    xyc1 = x * y * c1
+    xzc1 = x * z * c1
+    yzc1 = y * z * c1
+    t11 = x * x * c1 + c
+    t21 = xyc1 + zs
+    t31 = xzc1 - ys
+    t12 = xyc1 - zs
+    t22 = y * y * c1 + c
+    t32 = yzc1 + xs
+    t13 = xzc1 + ys
+    t23 = yzc1 - xs
+    t33 = z * z * c1 + c
+
 rotate _ _ _ = fail "Matrix4>>rotate: Impossible!"
 
 -- | Creates a transformation matrix for scaling by 3 scalar values, one for
