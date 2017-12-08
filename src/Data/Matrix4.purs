@@ -225,14 +225,16 @@ makeRotate :: Number -> Vec3N -> Mat4
 makeRotate angle axis =
   case V.normalize axis of
     V.Vec [x,y,z] ->
-      let c = cos angle
-          c1 = 1.0-c
-          s = sin angle
-      in Mat [x*x*c1+c,y*x*c1+z*s,z*x*c1-y*s,0.0,
-              x*y*c1-z*s,y*y*c1+c,y*z*c1+x*s,0.0,
-              x*z*c1+y*s,y*z*c1-x*s,z*z*c1+c,0.0,
-              0.0,0.0,0.0,1.0]
+      Mat [ x * x * c1 + c, y * x * c1 + z * s, z * x * c1 - y * s, 0.0,
+            x * y * c1 - z * s, y * y * c1 + c, y * z * c1 + x * s, 0.0,
+            x * z * c1 + y * s, y * z * c1 - x * s, z * z * c1 + c, 0.0,
+            0.0, 0.0, 0.0, 1.0
+          ]
     _ -> fail "Matrix4>>makeRotate: Impossible!"
+  where
+    c = cos angle
+    c1 = 1.0-c
+    s = sin angle
 
 -- | Concatenates a rotation in radians about an axis to the given matrix.
 rotate :: Number -> Vec3N -> Mat4 -> Mat4
