@@ -379,12 +379,9 @@ makeBasis (V.Vec [x0,x1,x2]) (V.Vec [y0,y1,y2]) (V.Vec [z0,z1,z2])=
 makeBasis _ _ _ = fail "Matrix4>>makeBasis: Impossible!"
 
 project :: Vec3N
-    -> Mat4
-    -- ^ modelview matrix
-     -> Mat4
-     -- ^ projection matrix
-     -> Vec4N
-     -- ^ viewport
+    -> Mat4 -- modelview matrix
+     -> Mat4 -- projection matrix
+     -> Vec4N -- viewport
      -> Maybe Vec3N
 project (V.Vec [objx,objy,objz])
         (Mat [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m43, m14, m24, m34, m44])
@@ -423,12 +420,9 @@ project (V.Vec [objx,objy,objz])
 project _ _ _ _ = fail "Matrix4>>project: Impossible!"
 
 unProject :: Vec3N
-    -> Mat4
-        -- ^ modelview matrix
-    -> Mat4
-        -- ^ projection matrix
-    -> Vec4N
-        -- ^ viewport
+    -> Mat4 -- modelview matrix
+    -> Mat4 -- projection matrix
+    -> Vec4N -- viewport
     -> Maybe Vec3N
 unProject (V.Vec [winx,winy,winz])
         modelView
