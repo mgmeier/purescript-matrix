@@ -42,12 +42,17 @@ identity = Mat
 -- | Multiply a V.Vector by a 4x4 matrix: m * v
 transform :: Mat4 -> Vec3N -> Vec3N
 transform (Mat [x11, x12, x13, x14, x21, x22, x23, x24, x31, x32, x33, x34, x41, x42, x43, x44]) v =
-  let t1 = V.Vec[x11,x21,x31]
-      t2 = V.Vec[x12,x22,x32]
-      t3 = V.Vec[x13,x23,x33]
-      t4 = V.Vec[x14,x24,x34]
-      w  = V.dot v t4 + x44
-  in V.Vec [(V.dot v t1 + x41) / w,(V.dot v t2 + x42) / w,(V.dot v t3 + x43) / w]
+  V.Vec [ (V.dot v t1 + x41) / w,
+          (V.dot v t2 + x42) / w,
+          (V.dot v t3 + x43) / w
+        ]
+  where
+    t1 = V.Vec[x11,x21,x31]
+    t2 = V.Vec[x12,x22,x32]
+    t3 = V.Vec[x13,x23,x33]
+    t4 = V.Vec[x14,x24,x34]
+    w  = V.dot v t4 + x44
+
 transform _ _ = fail "Matrix4>>transform: Impossible!"
 
 -- | Computes the inverse of the given matrix m, assuming that the matrix is
