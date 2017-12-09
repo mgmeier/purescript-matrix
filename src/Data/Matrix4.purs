@@ -16,7 +16,7 @@ module Data.Matrix4 where
 
 import Prelude ((*), (+), (/), (==), (-), negate, ($))
 import Data.TypeNat (Four)
-import Data.Matrix (Mat(Mat), transpose, fromArray)
+import Data.Matrix (Mat(Mat), transpose, fromArrayColumns)
 import Data.Vector3 (Vec3, cross) as V
 import Data.Vector4 (Vec4) as V
 import Data.Vector (Vec(Vec), normalize, direction, dot) as V
@@ -30,7 +30,7 @@ type Vec4N = V.Vec4 Number
 type Mat4 = Mat Four Number
 
 mat4 :: Array Number -> Mat4
-mat4 = fromArray
+mat4 = fromArrayColumns
 
 identity :: Mat4
 identity = Mat

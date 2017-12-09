@@ -13,7 +13,7 @@ import Control.Monad.Eff.Console (logShow, CONSOLE)
 
 
 ble :: forall h r . Eff (st :: ST h | r) (M.STMat4 h)
--- ble = fromMatrix (M.fromArray [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) >>= stackPush >>= scaleSTMatrix 2 >>= stackPop
+-- ble = fromMatrix (M.fromArrayColumns [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) >>= stackPush >>= scaleSTMatrix 2 >>= stackPop
 -- ble = M.identityST >>= M.scaleSTMatrix 2
 ble = M.identityST
 

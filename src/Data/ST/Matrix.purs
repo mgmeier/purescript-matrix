@@ -47,7 +47,7 @@ cloneSTMat (STMat arr) = STMat <<< unsafeThaw <$> freeze arr
 fromSTMat :: forall s h a r. (Sized s) => (STMat s h a) -> Eff (st :: ST h | r) (M.Mat s a)
 fromSTMat (STMat arr) = do
     x   <- freeze arr
-    pure (M.fromArray x)
+    pure (M.fromArrayColumns x)
 
 toSTMat :: forall s h a r. (M.Mat s a) -> Eff (st :: ST h | r) (STMat s h a)
 toSTMat m = STMat <$> thaw (M.toArray m)

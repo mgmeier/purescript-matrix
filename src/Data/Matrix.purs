@@ -102,12 +102,12 @@ getElem i j m@(Mat l) = unsafePartial $ fromJust (l !! (i * sized (Proxy :: Prox
 scaleMatrix ::  forall a s. (EuclideanRing a) => a -> Mat s a -> Mat s a
 scaleMatrix = (<$>) <<< (*)
 
-fromArray :: forall a s. (Sized s) => Array a -> Mat s a
-fromArray l =
+fromArrayColumns :: forall a s. (Sized s) => Array a -> Mat s a
+fromArrayColumns l =
   let size = sized (Proxy :: Proxy s)
   in case size * size of
         i | i == length l -> Mat l
-          | otherwise     -> fail "Matrix>>fromArray: Wrong array length!"
+          | otherwise     -> fail "Matrix>>fromArrayColumns: Wrong array length!"
 
 toArray :: forall s a. Mat s a -> Array a
 toArray (Mat a) = a

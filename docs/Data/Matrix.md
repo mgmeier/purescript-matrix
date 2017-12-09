@@ -57,10 +57,10 @@ scaleMatrix :: forall a s. EuclideanRing a => a -> Mat s a -> Mat s a
 
 Scale a matrix by a given factor.
 
-#### `fromArray`
+#### `fromArrayColumns`
 
 ``` purescript
-fromArray :: forall a s. Sized s => Array a -> Mat s a
+fromArrayColumns :: forall a s. Sized s => Array a -> Mat s a
 ```
 
 #### `toArray`
@@ -76,5 +76,3 @@ transpose :: forall a s. Sized s => Mat s a -> Mat s a
 ```
 
 /O(rows*cols)/. The transpose of a matrix.
-
-
