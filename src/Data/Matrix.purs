@@ -111,6 +111,9 @@ columns m@(Mat a) = V.Vec <$> (slicers <*> [a])
       col <- range 0 ((snd $ dim m) - 1)
       pure $ slice (col * row) ((col + 1) * row)
 
+rows :: forall r c a. Sized r => Sized c => Mat r c a -> Array (V.Vec c a)
+rows = columns <<< transpose
+
 -- | /O(rows*cols)/. Identity matrix of the given order.
 --
 -- > identity n =

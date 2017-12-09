@@ -17,7 +17,7 @@ import Data.String (take)
 import Data.Tuple (Tuple)
 import Data.Tuple.Nested ((/\))
 import Data.Vector as V
-import Data.Matrix (Mat, columns, generate, getElem, index, show', toArrayColumns) as M
+import Data.Matrix (Mat, columns, generate, getElem, index, rows, show', toArrayColumns) as M
 import Data.Matrix4 (Mat4, Vec3N, identity, rotate, translate) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
@@ -60,6 +60,13 @@ main = run [consoleReporter] do
       let result = M.columns m
       it "gives a row worth of columns" do
         A.shouldEqual (length result) 4
+
+  describe "rows" do
+    describe "for a given matrix" do
+      let m = M.generate (\i j -> toNumber i) :: M.Mat Three Four Number
+      let result = M.rows m
+      it "gives a column worth of rows" do
+        A.shouldEqual (length result) 3
 
   describe "index" do
     let m = M.generate (\i j -> 10.0) :: M.Mat Three Four Number
