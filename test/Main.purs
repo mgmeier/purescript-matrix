@@ -2,20 +2,27 @@
 module Test.Main where
 
 import Prelude
-import Data.Matrix4 (Mat4, Vec3N, identity, translate, rotate) as M
-import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
-import Data.ST.Matrix (runSTMatrix) as M
 
-import Test.Spec (pending)
+import Test.Spec (describe, it)
+import Test.Spec.Assertions as A
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (RunnerEffects, run)
 
+import Data.TypeNat (Four, Three)
+
+import Data.Array (length)
+import Data.Int (toNumber)
+
 import Data.Vector as V
+import Data.Matrix (Mat, columns, generate) as M
+import Data.Matrix4 (Mat4, Vec3N, identity, rotate, translate) as M
+import Data.ST.Matrix (runSTMatrix) as M
+import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
+
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
 import Control.Monad.Eff.Console (logShow, CONSOLE)
-
 
 ble :: forall h r . Eff (st :: ST h | r) (M.STMat4 h)
 -- ble = fromMatrix (M.fromArrayColumns [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) >>= stackPush >>= scaleSTMatrix 2 >>= stackPop
@@ -44,4 +51,9 @@ preexisting = do
 
 main :: Eff (RunnerEffects ()) Unit
 main = run [consoleReporter] do
-  pending "tests"
+  describe "columns" do
+    describe "for a given matrix" do
+      let m = M.generate (\i j -> toNumber j) :: M.Mat Three Four Number
+      let result = M.columns m
+      it "gives a row worth of columns" do
+        A.shouldEqual (length result) 4

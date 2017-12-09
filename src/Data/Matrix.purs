@@ -15,10 +15,15 @@
 module Data.Matrix where
 
 import Prelude
+import Type.Proxy (Proxy(Proxy))
+
 import Data.Array (length, (!!), zipWith, slice, range, concat)
 import Data.Maybe (fromJust)
-import Type.Proxy (Proxy(Proxy))
+import Data.Tuple (Tuple, fst, snd)
+import Data.Tuple.Nested ((/\))
 import Data.TypeNat (class Sized, Four, Three, Two, sized)
+import Data.Vector as V
+
 import Extensions (fail)
 import Partial.Unsafe (unsafePartial)
 
@@ -47,21 +52,9 @@ instance showMat3 :: (Show a) => Show (Mat Three Three a) where
 instance showMat4 :: (Show a) => Show (Mat Four Four a) where
   show m = "Mat4x4 " <> show (columns m)
 
-columns :: forall r c a . Sized r => Sized c => Mat r c a -> Array (Array a)
-columns mat@(Mat m) | sized (Proxy :: Proxy r) == 2 =
-    [slice 0 2 m,
-     slice 2 4 m]
-                    | sized (Proxy :: Proxy r) == 3 =
-    [slice 0 3 m,
-     slice 3 6 m,
-     slice 6 9 m]
-                    | sized (Proxy :: Proxy r) == 4 =
-  [slice 0 4 m,
-   slice 4 8 m,
-   slice 8 12 m,
-   slice 12 16 m]
-                    | otherwise                        =
-    fail "Matrix>>columns: Proxy size not supprted!"
+dim :: forall r c a. Sized r => Sized c => Mat r c a -> Tuple Int Int
+dim _ = (sized (Proxy :: Proxy r)) /\ (sized (Proxy :: Proxy c))
+
 
 instance eqMat :: (Eq a) => Eq (Mat r c a) where
   eq (Mat l) (Mat r) = l == r
@@ -71,6 +64,14 @@ instance functorMat :: Functor (Mat r c) where
 
 instance applyMat :: Apply (Mat r c) where
   apply (Mat f) (Mat a) = Mat (zipWith (\f' a' -> f' a') f a)
+
+columns :: forall r c a . Sized r => Sized c => Mat r c a -> Array (V.Vec r a)
+columns m@(Mat a) = V.Vec <$> (slicers <*> [a])
+  where
+    slicers = do
+      let row = fst $ dim m
+      col <- range 0 ((snd $ dim m) - 1)
+      pure $ slice (col * row) ((col + 1) * row)
 
 -- | /O(rows*cols)/. Identity matrix of the given order.
 --
