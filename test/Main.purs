@@ -15,7 +15,7 @@ import Data.Int (toNumber)
 import Data.Tuple (Tuple)
 import Data.Tuple.Nested ((/\))
 import Data.Vector as V
-import Data.Matrix (Mat, columns, generate, index, toArrayColumns) as M
+import Data.Matrix (Mat, columns, generate, getElem, index, toArrayColumns) as M
 import Data.Matrix4 (Mat4, Vec3N, identity, rotate, translate) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
@@ -76,3 +76,10 @@ main = run [consoleReporter] do
       it "does not invert rows and columns" do
         A.shouldContain (M.toArrayColumns result) (2 /\ 3)
         A.shouldNotContain (M.toArrayColumns result) (3 /\ 2)
+
+  describe "getElem" do
+    describe "for a given matrix" do
+      let m = M.generate (\i j -> i /\ j) :: M.Mat Three Four (Tuple Int Int)
+      describe "for an index inside the matrix" do
+        it "returns the correct element" do
+          A.shouldEqual (M.getElem m 2 3) (2 /\ 3)

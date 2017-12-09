@@ -94,12 +94,13 @@ index :: forall r c a. Sized r => Sized c => Mat r c a -> Int -> Int -> Int
 index m i j = (j * (fst $ dim m) + i)
 
 -- | /O(1)/. Get an element of a matrix.
-getElem :: forall r c a. Sized r => Sized c =>
-           Int      -- ^ Row
-        -> Int      -- ^ Column
-        -> Mat r c a     -- ^ Matrix
-        -> a
-getElem i j m@(Mat l) = unsafePartial $ fromJust (l !! (i * sized (Proxy :: Proxy r) + j))
+getElem :: forall r c a.
+  Sized r => Sized c =>
+  Mat r c a     -- Matrix
+  -> Int        -- Row
+  -> Int        -- Column
+  -> a
+getElem m@(Mat l) i j = unsafePartial $ fromJust (l !! index m i j)
 
 -- | Scale a matrix by a given factor.
 --   Example:
@@ -126,8 +127,9 @@ toArrayColumns (Mat a) = a
 -- >           ( 1 2 3 )   ( 1 4 7 )
 -- >           ( 4 5 6 )   ( 2 5 8 )
 -- > transpose ( 7 8 9 ) = ( 3 6 9 )
-transpose :: forall r c a.  Sized r => Sized c => Mat r c a -> Mat r c a
-transpose m = generate $ \ i j -> getElem j i m
+transpose :: forall r c a.  Sized r => Sized c => Mat r c a -> Mat c r a
+transpose m = generate $ \i j -> getElem m j i
+
 
 
 {-
