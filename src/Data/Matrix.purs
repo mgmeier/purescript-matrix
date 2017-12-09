@@ -154,8 +154,14 @@ fromArrayColumns l =
     cs = sized (Proxy :: Proxy c)
     rs = sized (Proxy :: Proxy r)
 
+fromArrayRows :: forall r c a. Sized r => Sized c => Array a -> Mat r c a
+fromArrayRows = transpose <<< fromArrayColumns
+
 toArrayColumns :: forall r c a. Mat r c a -> Array a
 toArrayColumns (Mat a) = a
+
+toArrayRows :: forall r c a. Sized r => Sized c => Mat r c a -> Array a
+toArrayRows = toArrayColumns <<< transpose
 
 -- | /O(rows*cols)/. The transpose of a matrix.
 --   Example:
