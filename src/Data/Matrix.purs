@@ -109,8 +109,8 @@ fromArrayColumns l =
         i | i == length l -> Mat l
           | otherwise     -> fail "Matrix>>fromArrayColumns: Wrong array length!"
 
-toArray :: forall s a. Mat s a -> Array a
-toArray (Mat a) = a
+toArrayColumns :: forall s a. Mat s a -> Array a
+toArrayColumns (Mat a) = a
 
 -- | /O(rows*cols)/. The transpose of a matrix.
 --   Example:

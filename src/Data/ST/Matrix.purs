@@ -50,7 +50,7 @@ fromSTMat (STMat arr) = do
     pure (M.fromArrayColumns x)
 
 toSTMat :: forall s h a r. (M.Mat s a) -> Eff (st :: ST h | r) (STMat s h a)
-toSTMat m = STMat <$> thaw (M.toArray m)
+toSTMat m = STMat <$> thaw (M.toArrayColumns m)
 
 -- copyToSTMat :: forall s h a r. (M.Matrix (M.Mat s) a) => (M.Mat s a) -> (STMat s h a) -> Eff (st :: ST h | r) Unit
 
@@ -59,7 +59,7 @@ foreign import copyToSTMat :: forall s h a r. (M.Mat s a) -> (STMat s h a) -> Ef
 identityST' :: forall s h r. (Sized s) => Eff (st :: ST h | r) (STMat s h Number)
 identityST' =
     let m = M.identity' :: M.Mat s Number
-    in STMat <$> thaw (M.toArray m)
+    in STMat <$> thaw (M.toArrayColumns m)
 
 foreign import scaleSTMatrixInt :: forall a h r. (EuclideanRing a) => a -> STArray h a -> Eff (st :: ST h | r) Unit
 

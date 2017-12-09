@@ -63,10 +63,10 @@ Scale a matrix by a given factor.
 fromArrayColumns :: forall a s. Sized s => Array a -> Mat s a
 ```
 
-#### `toArray`
+#### `toArrayColumns`
 
 ``` purescript
-toArray :: forall s a. Mat s a -> Array a
+toArrayColumns :: forall s a. Mat s a -> Array a
 ```
 
 #### `transpose`
