@@ -19,9 +19,10 @@ import Type.Proxy (Proxy(Proxy))
 
 import Data.Array (length, range, slice, zipWith, (!!))
 import Data.Maybe (fromJust)
+import Data.String (joinWith)
 import Data.Tuple (Tuple, fst, snd)
 import Data.Tuple.Nested ((/\))
-import Data.TypeNat (class Sized, Four, Three, Two, sized)
+import Data.TypeNat (class Sized, Four, Three, Two, One, sized)
 import Data.Vector as V
 
 import Extensions (fail)
@@ -29,16 +30,49 @@ import Partial.Unsafe (unsafePartial)
 
 newtype Mat r c a = Mat (Array a)
 
-instance showMat2 :: (Show a) => Show (Mat Two Two a) where
-  show m = "Mat2x2 " <> show (columns m)
-instance showMat3 :: (Show a) => Show (Mat Three Three a) where
-  show m = "Mat3x3 " <> show (columns m)
-instance showMat4 :: (Show a) => Show (Mat Four Four a) where
-  show m = "Mat4x4 " <> show (columns m)
-
 dim :: forall r c a. Sized r => Sized c => Mat r c a -> Tuple Int Int
 dim _ = (sized (Proxy :: Proxy r)) /\ (sized (Proxy :: Proxy c))
 
+show' :: forall r c a. Sized r => Sized c => Show a => Mat r c a -> String
+show' m = joinWith " " [t, show(columns m)]
+  where
+    t = joinWith "" ["Mat", show $ fst $ dim m, "x", show $ snd $ dim m]
+
+instance showMat11 :: Show a => Show (Mat One One a) where
+  show = show'
+
+instance showMat12 :: Show a => Show (Mat One Two a) where
+  show = show'
+instance showMat21 :: Show a => Show (Mat Two One a) where
+  show = show'
+instance showMat22 :: Show a => Show (Mat Two Two a) where
+  show = show'
+
+instance showMat31 :: Show a => Show (Mat Three One a) where
+  show = show'
+instance showMat13 :: Show a => Show (Mat One Three a) where
+  show = show'
+instance showMat32 :: Show a => Show (Mat Three Two a) where
+  show = show'
+instance showMat23 :: Show a => Show (Mat Two Three a) where
+  show = show'
+instance showMat33 :: Show a => Show (Mat Three Three a) where
+  show = show'
+
+instance showMat41 :: Show a => Show (Mat Four One a) where
+  show = show'
+instance showMat14 :: Show a => Show (Mat One Four a) where
+  show = show'
+instance showMat42 :: Show a => Show (Mat Four Two a) where
+  show = show'
+instance showMat24 :: Show a => Show (Mat Two Four a) where
+  show = show'
+instance showMat43 :: Show a => Show (Mat Four Three a) where
+  show = show'
+instance showMat34 :: Show a => Show (Mat Three Four a) where
+  show = show'
+instance showMat44 :: Show a => Show (Mat Four Four a) where
+  show = show'
 
 instance eqMat :: (Eq a) => Eq (Mat r c a) where
   eq (Mat l) (Mat r) = l == r

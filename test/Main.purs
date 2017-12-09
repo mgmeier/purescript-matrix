@@ -5,6 +5,7 @@ import Prelude
 
 import Test.Spec (describe, it)
 import Test.Spec.Assertions as A
+import Test.Spec.Assertions.String as S
 import Test.Spec.Reporter.Console (consoleReporter)
 import Test.Spec.Runner (RunnerEffects, run)
 
@@ -12,10 +13,11 @@ import Data.TypeNat (Four, Three)
 
 import Data.Array (length)
 import Data.Int (toNumber)
+import Data.String (take)
 import Data.Tuple (Tuple)
 import Data.Tuple.Nested ((/\))
 import Data.Vector as V
-import Data.Matrix (Mat, columns, generate, getElem, index, toArrayColumns) as M
+import Data.Matrix (Mat, columns, generate, getElem, index, show', toArrayColumns) as M
 import Data.Matrix4 (Mat4, Vec3N, identity, rotate, translate) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
@@ -67,6 +69,15 @@ main = run [consoleReporter] do
       A.shouldEqual 1 $ M.index m 1 0
     it "wraps good " do
       A.shouldEqual 3 $ M.index m 0 1
+
+  describe "show'" do
+    describe "for a given matrix" do
+      let m = M.generate (\i j -> 10.0) :: M.Mat Three Four Number
+      let result = M.show' m
+      it "produces a matrix type header" do
+        A.shouldEqual (take 3 result) "Mat"
+      it "gives rows x colums" do
+        S.shouldContain result "3x4"
 
   describe "generate" do
     describe "for a given matrix" do
