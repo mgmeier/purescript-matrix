@@ -21,9 +21,9 @@ import Data.ST.Matrix (STMat)
 import Control.Monad.Eff (Eff)
 import Control.Monad.ST (ST())
 
-type STMat4 h = STMat Four h Number
+type STMat4 h = STMat Four Four h Number
 
-foreign import identityST  :: forall h r. Eff (st :: ST h | r) (STMat Four h Number)
+foreign import identityST  :: forall h r. Eff (st :: ST h | r) (STMat Four Four h Number)
 
 foreign import rotateST  :: forall h r. Number -> Vec3N -> STMat4 h -> Eff (st :: ST h | r) Unit
 

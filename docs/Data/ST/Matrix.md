@@ -5,7 +5,7 @@ Binding to mjs library
 #### `STMat`
 
 ``` purescript
-newtype STMat s h a
+newtype STMat r c h a
   = STMat (STArray h a)
 ```
 
@@ -48,31 +48,31 @@ unsafeThaw :: forall a h. Array a -> STArray h a
 #### `cloneSTMat`
 
 ``` purescript
-cloneSTMat :: forall s h a e. (STMat s h a) -> Eff (st :: ST h | e) (STMat s h a)
+cloneSTMat :: forall r c h a e. (STMat r c h a) -> Eff (st :: ST h | e) (STMat r c h a)
 ```
 
 #### `fromSTMat`
 
 ``` purescript
-fromSTMat :: forall s h a e. Sized s => (STMat s h a) -> Eff (st :: ST h | e) (Mat s a)
+fromSTMat :: forall r c h a e. Sized r => Sized c => (STMat r c h a) -> Eff (st :: ST h | e) (Mat r c a)
 ```
 
 #### `toSTMat`
 
 ``` purescript
-toSTMat :: forall s h a e. (Mat s a) -> Eff (st :: ST h | e) (STMat s h a)
+toSTMat :: forall r c h a e. (Mat r c a) -> Eff (st :: ST h | e) (STMat r c h a)
 ```
 
 #### `copyToSTMat`
 
 ``` purescript
-copyToSTMat :: forall s h a e. (Mat s a) -> (STMat s h a) -> Eff (st :: ST h | e) Unit
+copyToSTMat :: forall r c h a e. (Mat r c a) -> (STMat r c h a) -> Eff (st :: ST h | e) Unit
 ```
 
 #### `identityST'`
 
 ``` purescript
-identityST' :: forall s h e. Sized s => Eff (st :: ST h | e) (STMat s h Number)
+identityST' :: forall r c h e. Sized r => Sized c => Eff (st :: ST h | e) (STMat r c h Number)
 ```
 
 #### `scaleSTMatrixInt`
@@ -84,17 +84,17 @@ scaleSTMatrixInt :: forall a h e. EuclideanRing a => a -> STArray h a -> Eff (st
 #### `scaleSTMatrix`
 
 ``` purescript
-scaleSTMatrix :: forall s a h e. EuclideanRing a => a -> (STMat s h a) -> Eff (st :: ST h | e) (STMat s h a)
+scaleSTMatrix :: forall r c a h e. EuclideanRing a => a -> (STMat r c h a) -> Eff (st :: ST h | e) (STMat r c h a)
 ```
 
 #### `fromMatrix`
 
 ``` purescript
-fromMatrix :: forall s h e a. Mat s a -> Eff (st :: ST h | e) (STMat s h a)
+fromMatrix :: forall r c h e a. Mat r c a -> Eff (st :: ST h | e) (STMat r c h a)
 ```
 
 #### `runSTMatrix`
 
 ``` purescript
-runSTMatrix :: forall s a e. (forall h. Eff (st :: ST h | e) (STMat s h a)) -> Eff e (Mat s a)
+runSTMatrix :: forall r c a e. (forall h. Eff (st :: ST h | e) (STMat r c h a)) -> Eff e (Mat r c a)
 ```

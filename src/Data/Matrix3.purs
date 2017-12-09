@@ -20,7 +20,7 @@ import Data.Matrix (Mat(Mat), fromArrayColumns)
 import Data.Maybe (Maybe(Just, Nothing))
 import Extensions (fail)
 
-type Mat3 = Mat Three Number
+type Mat3 = Mat Three Three Number
 
 mat3 :: Array Number -> Mat3
 mat3 = fromArrayColumns
@@ -31,7 +31,7 @@ identity = Mat
             0.0,1.0,0.0,
             0.0,0.0,1.0]
 
-normalFromMat4 :: Mat Four Number -> Maybe Mat3
+normalFromMat4 :: Mat Four Four Number -> Maybe Mat3
 normalFromMat4 (Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30, a31, a32, a33]) =
   if (det == 0.0)
         then Nothing

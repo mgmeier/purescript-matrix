@@ -27,7 +27,7 @@ import Extensions (fail)
 
 type Vec3N = V.Vec3 Number
 type Vec4N = V.Vec4 Number
-type Mat4 = Mat Four Number
+type Mat4 = Mat Four Four Number
 
 mat4 :: Array Number -> Mat4
 mat4 = fromArrayColumns

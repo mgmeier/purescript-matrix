@@ -5,7 +5,7 @@ Binding to mjs library
 #### `Mat`
 
 ``` purescript
-newtype Mat s a
+newtype Mat r c a
   = Mat (Array a)
 ```
 
@@ -14,15 +14,15 @@ newtype Mat s a
 (Show a) => Show (Mat Two a)
 (Show a) => Show (Mat Three a)
 (Show a) => Show (Mat Four a)
-(Eq a) => Eq (Mat s a)
-Functor (Mat s)
-Apply (Mat s)
+(Eq a) => Eq (Mat r c a)
+Functor (Mat r c)
+Apply (Mat r c)
 ```
 
 #### `generate`
 
 ``` purescript
-generate :: forall a s. Sized s => (Int -> Int -> a) -> Mat s a
+generate :: forall a r c. Sized r => Sized c => (Int -> Int -> a) -> Mat r c a
 ```
 
 /O(rows*cols)/. Generate a matrix from a generator function.
@@ -30,13 +30,13 @@ generate :: forall a s. Sized s => (Int -> Int -> a) -> Mat s a
 #### `columns`
 
 ``` purescript
-columns :: forall s a. Sized s => Mat s a -> Array (Array a)
+columns :: forall r c a. Sized r => Sized c => Mat r c a -> Array (Array a)
 ```
 
 #### `identity'`
 
 ``` purescript
-identity' :: forall s. Sized s => Mat s Number
+identity' :: forall r c. Sized r => Sized c => Mat r c Number
 ```
 
 /O(rows*cols)/. Identity matrix of the given order.
@@ -44,7 +44,7 @@ identity' :: forall s. Sized s => Mat s Number
 #### `getElem`
 
 ``` purescript
-getElem :: forall s a. Sized s => Int -> Int -> Mat s a -> a
+getElem :: forall r c a. Sized r => Sized c => Int -> Int -> Mat r c a -> a
 ```
 
 /O(1)/. Get an element of a matrix.
@@ -52,7 +52,7 @@ getElem :: forall s a. Sized s => Int -> Int -> Mat s a -> a
 #### `scaleMatrix`
 
 ``` purescript
-scaleMatrix :: forall a s. EuclideanRing a => a -> Mat s a -> Mat s a
+scaleMatrix :: forall a r c. EuclideanRing a => a -> Mat r c a -> Mat r c a
 ```
 
 Scale a matrix by a given factor.
@@ -60,19 +60,19 @@ Scale a matrix by a given factor.
 #### `fromArrayColumns`
 
 ``` purescript
-fromArrayColumns :: forall a s. Sized s => Array a -> Mat s a
+fromArrayColumns :: forall a r c. Sized r => Sized c => Array a -> Mat r c a
 ```
 
 #### `toArrayColumns`
 
 ``` purescript
-toArrayColumns :: forall s a. Mat s a -> Array a
+toArrayColumns :: forall r c a. Mat r c a -> Array a
 ```
 
 #### `transpose`
 
 ``` purescript
-transpose :: forall a s. Sized s => Mat s a -> Mat s a
+transpose :: forall a r c. Sized r => Sized c => Mat r c a -> Mat r c a
 ```
 
 /O(rows*cols)/. The transpose of a matrix.
