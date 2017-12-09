@@ -17,8 +17,8 @@ module Data.Matrix where
 import Prelude
 import Data.Array (length, (!!), zipWith, slice, range, concat)
 import Data.Maybe (fromJust)
-import Data.TypeNat (class Sized, Four, Three, Two, sized)
 import Type.Proxy (Proxy(Proxy))
+import Data.TypeNat (class Sized, Four, Three, Two, sized)
 import Extensions (fail)
 import Partial.Unsafe (unsafePartial)
 
