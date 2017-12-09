@@ -17,7 +17,7 @@ module Data.Matrix where
 import Prelude
 import Type.Proxy (Proxy(Proxy))
 
-import Data.Array (length, range, slice, zipWith, (!!))
+import Data.Array (concat, length, range, slice, zipWith, (!!))
 import Data.Maybe (fromJust)
 import Data.String (joinWith)
 import Data.Tuple (Tuple, fst, snd)
@@ -165,6 +165,14 @@ toArrayColumns (Mat a) = a
 
 toArrayRows :: forall r c a. Sized r => Sized c => Mat r c a -> Array a
 toArrayRows = toArrayColumns <<< transpose
+
+fromColumns :: forall r c a. Sized r => Sized c => Array (V.Vec r a) -> Mat r c a
+fromColumns vs | ((length vs) == sized (Proxy :: Proxy c)) = Mat $ concat $ V.toArray <$> vs
+fromColumns _ = fail "Matrix>>fromColumns: Wrong array length!"
+
+fromRows :: forall r c a. Sized r => Sized c => Array (V.Vec c a) -> Mat r c a
+fromRows vs | ((length vs) == sized (Proxy :: Proxy r)) = transpose $ Mat $ concat $ V.toArray <$> vs
+fromRows _ = fail "Matrix>>fromColumns: Wrong array length!"
 
 -- | /O(rows*cols)/. The transpose of a matrix.
 --   Example:
