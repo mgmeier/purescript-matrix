@@ -113,10 +113,12 @@ scaleMatrix = (<$>) <<< (*)
 
 fromArrayColumns :: forall r c a. Sized r => Sized c => Array a -> Mat r c a
 fromArrayColumns l =
-  let size = sized (Proxy :: Proxy r)
-  in case size * size of
+  case cs * rs of
         i | i == length l -> Mat l
           | otherwise     -> fail "Matrix>>fromArrayColumns: Wrong array length!"
+  where
+    cs = sized (Proxy :: Proxy c)
+    rs = sized (Proxy :: Proxy r)
 
 toArrayColumns :: forall r c a. Mat r c a -> Array a
 toArrayColumns (Mat a) = a
