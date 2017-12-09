@@ -90,6 +90,9 @@ columns m@(Mat a) = V.Vec <$> (slicers <*> [a])
 identity' :: forall r c. Sized r => Sized c => Mat r c Number
 identity' = generate \ i j -> if i == j then 1.0 else 0.0
 
+index :: forall r c a. Sized r => Sized c => Mat r c a -> Int -> Int -> Int
+index m i j = (j * (fst $ dim m) + i)
+
 -- | /O(1)/. Get an element of a matrix.
 getElem :: forall r c a. Sized r => Sized c =>
            Int      -- ^ Row
