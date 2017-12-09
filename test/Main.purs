@@ -12,9 +12,10 @@ import Data.TypeNat (Four, Three)
 
 import Data.Array (length)
 import Data.Int (toNumber)
-
+import Data.Tuple (Tuple)
+import Data.Tuple.Nested ((/\))
 import Data.Vector as V
-import Data.Matrix (Mat, columns, generate) as M
+import Data.Matrix (Mat, columns, generate, toArrayColumns) as M
 import Data.Matrix4 (Mat4, Vec3N, identity, rotate, translate) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
@@ -57,3 +58,12 @@ main = run [consoleReporter] do
       let result = M.columns m
       it "gives a row worth of columns" do
         A.shouldEqual (length result) 4
+
+  describe "generate" do
+    describe "for a given matrix" do
+      let result = M.generate (\i j -> i /\ j) :: M.Mat Three Four (Tuple Int Int)
+      it "is zero indexed" do
+        A.shouldContain (M.toArrayColumns result) (0 /\ 0)
+      it "does not invert rows and columns" do
+        A.shouldContain (M.toArrayColumns result) (2 /\ 3)
+        A.shouldNotContain (M.toArrayColumns result) (3 /\ 2)

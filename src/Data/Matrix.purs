@@ -17,7 +17,7 @@ module Data.Matrix where
 import Prelude
 import Type.Proxy (Proxy(Proxy))
 
-import Data.Array (length, (!!), zipWith, slice, range, concat)
+import Data.Array (length, range, slice, zipWith, (!!))
 import Data.Maybe (fromJust)
 import Data.Tuple (Tuple, fst, snd)
 import Data.Tuple.Nested ((/\))
@@ -28,22 +28,6 @@ import Extensions (fail)
 import Partial.Unsafe (unsafePartial)
 
 newtype Mat r c a = Mat (Array a)
-
--- | /O(rows*cols)/. Generate a matrix from a generator function.
---   Example of usage:
---
--- >                                  (  1  0 -1 -2 )
--- >                                  (  3  2  1  0 )
--- >                                  (  5  4  3  2 )
--- > (generate $ \ i j -> 2*i - j) :: Mat Four Number = (  7  6  5  4 )
-generate :: forall a r c. Sized r => Sized c =>
-          (Int -> Int -> a) -- ^ Generator function
-            -> Mat r c a
-generate f =
-    let size = sized (Proxy :: Proxy r)
-    in Mat $ concat $
-        (\col -> (\row -> f col row)  <$> (range 0 (size - 1)))
-            <$> (range 0 (size - 1))
 
 instance showMat2 :: (Show a) => Show (Mat Two Two a) where
   show m = "Mat2x2 " <> show (columns m)
@@ -64,6 +48,26 @@ instance functorMat :: Functor (Mat r c) where
 
 instance applyMat :: Apply (Mat r c) where
   apply (Mat f) (Mat a) = Mat (zipWith (\f' a' -> f' a') f a)
+
+-- | /O(rows*cols)/. Generate a matrix from a generator function.
+--   Example of usage:
+--
+-- >                                  (  1  0 -1 -2 )
+-- >                                  (  3  2  1  0 )
+-- >                                  (  5  4  3  2 )
+-- > (generate $ \ i j -> 2*i - j) :: Mat Four Four Number = ( 7  6  5  4 )
+generate :: forall r c a. Sized r => Sized c =>
+          (Int -> Int -> a) -- ^ Generator function
+            -> Mat r c a
+generate f =
+    Mat do
+      col <- range 0 (cs - 1)
+      row <- range 0 (rs - 1)
+      pure $ f row col
+    where
+      -- determine rows and cols without a Mat value
+      cs = sized (Proxy :: Proxy c)
+      rs = sized (Proxy :: Proxy r)
 
 columns :: forall r c a . Sized r => Sized c => Mat r c a -> Array (V.Vec r a)
 columns m@(Mat a) = V.Vec <$> (slicers <*> [a])
