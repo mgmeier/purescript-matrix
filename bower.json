@@ -34,7 +34,9 @@
   "devDependencies": {
     "purescript-assert": "^3.0.0",
     "purescript-console": "^3.0.0",
-    "purescript-random": "^3.0.0"
+    "purescript-random": "^3.0.0",
+    "purescript-spec": "git://github.com/owickstrom/purescript-spec.git#master",
+    "purescript-psci-support": "^3.0.0"
   },
   "resolutions": {
     "purescript-extensions": "^2.2.0"
