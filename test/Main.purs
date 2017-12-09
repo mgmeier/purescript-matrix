@@ -17,8 +17,8 @@ import Data.String (take)
 import Data.Tuple (Tuple)
 import Data.Tuple.Nested ((/\))
 import Data.Vector as V
-import Data.Matrix (Mat, columns, generate, getElem, index, rows, show', toArrayColumns) as M
-import Data.Matrix4 (Mat4, Vec3N, identity, rotate, translate) as M
+import Data.Matrix (Mat, columns, fromArrayColumns, generate, getElem, index, mulmatmat, mulmatvec, rows, show', toArrayColumns) as M
+import Data.Matrix4 (Mat4, Vec3N, identity, makeScale, makeTranslate3, rotate, translate) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
 
@@ -101,3 +101,23 @@ main = run [consoleReporter] do
       describe "for an index inside the matrix" do
         it "returns the correct element" do
           A.shouldEqual (M.getElem m 2 3) (2 /\ 3)
+
+  describe "mulmatvec" do
+    describe "for a scale matrix" do
+      let m = M.makeScale $ V.fromArray [3.0, 4.0, 5.0]
+      describe "for a given vector" do
+        let v = V.fromArray [1.0, 2.0, 3.0, 0.0] :: V.Vec Four Number
+        let result = M.mulmatvec m v
+        it "performs a scale" do
+          -- AC.logShow result
+          A.shouldEqual (V.fromArray [3.0, 8.0, 15.0, 0.0]) result
+
+  describe "mulmatmat" do
+    describe "for a scale matrix" do
+      let scale = 3.0
+      let mScale = M.makeScale $ V.fromArray [1.0, 2.0, 3.0]
+      describe "for a translation matrix" do
+        let mTranslate = M.makeTranslate3 10.0 20.0 30.0
+        let result = M.mulmatmat mTranslate mScale
+        it "performs scale then translation" do
+          A.shouldEqual result $ M.fromArrayColumns [1.0,0.0,0.0,0.0, 0.0,2.0,0.0,0.0, 0.0,0.0,3.0,0.0, 10.0, 20.0, 30.0, 1.0]

@@ -183,6 +183,11 @@ fromRows _ = fail "Matrix>>fromColumns: Wrong array length!"
 transpose :: forall r c a.  Sized r => Sized c => Mat r c a -> Mat c r a
 transpose m = generate $ \i j -> getElem m j i
 
+mulmatvec :: forall r c. Sized r => Sized c => Mat r c Number -> V.Vec c Number -> V.Vec r Number
+mulmatvec m v = V.Vec $ V.dot <$> rows m <*> [v]
+
+mulmatmat :: forall rl u cr. Sized rl => Sized u => Sized cr => Mat rl u Number -> Mat u cr Number -> Mat rl cr Number
+mulmatmat l r = fromColumns $ (mulmatvec l <$> columns r)
 
 
 {-
