@@ -186,6 +186,9 @@ transpose m = generate $ \i j -> getElem m j i
 mulmatvec :: forall r c. Sized r => Sized c => Mat r c Number -> V.Vec c Number -> V.Vec r Number
 mulmatvec m v = V.Vec $ V.dot <$> rows m <*> [v]
 
+mulvecmat :: forall r c. Sized r => Sized c => V.Vec r Number -> Mat r c Number -> V.Vec c Number
+mulvecmat v m = V.Vec $ V.dot <$> [v] <*> columns m
+
 mulmatmat :: forall rl u cr. Sized rl => Sized u => Sized cr => Mat rl u Number -> Mat u cr Number -> Mat rl cr Number
 mulmatmat l r = fromColumns $ (mulmatvec l <$> columns r)
 

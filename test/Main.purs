@@ -17,7 +17,7 @@ import Data.String (take)
 import Data.Tuple (Tuple)
 import Data.Tuple.Nested ((/\))
 import Data.Vector as V
-import Data.Matrix (Mat, columns, fromArrayColumns, generate, getElem, index, mulmatmat, mulmatvec, rows, show', toArrayColumns) as M
+import Data.Matrix (Mat, columns, fromArrayColumns, generate, getElem, index, mulmatmat, mulmatvec, mulvecmat, rows, show', toArrayColumns) as M
 import Data.Matrix4 (Mat4, Vec3N, identity, makeScale, makeTranslate3, rotate, translate) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
@@ -108,6 +108,16 @@ main = run [consoleReporter] do
       describe "for a given vector" do
         let v = V.fromArray [1.0, 2.0, 3.0, 0.0] :: V.Vec Four Number
         let result = M.mulmatvec m v
+        it "performs a scale" do
+          -- AC.logShow result
+          A.shouldEqual (V.fromArray [3.0, 8.0, 15.0, 0.0]) result
+
+  describe "mulvecmat" do
+    describe "for a scale matrix" do
+      let m = M.makeScale $ V.fromArray [3.0, 4.0, 5.0]
+      describe "for a given vector" do
+        let v = V.fromArray [1.0, 2.0, 3.0, 0.0] :: V.Vec Four Number
+        let result = M.mulvecmat v m
         it "performs a scale" do
           -- AC.logShow result
           A.shouldEqual (V.fromArray [3.0, 8.0, 15.0, 0.0]) result
