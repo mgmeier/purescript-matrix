@@ -38,41 +38,25 @@ show' m = joinWith " " [t, show(columns m)]
   where
     t = joinWith "" ["Mat", show $ fst $ dim m, "x", show $ snd $ dim m]
 
-instance showMat11 :: Show a => Show (Mat One One a) where
-  show = show'
+instance showMat11 :: Show a => Show (Mat One One a) where show = show'
 
-instance showMat12 :: Show a => Show (Mat One Two a) where
-  show = show'
-instance showMat21 :: Show a => Show (Mat Two One a) where
-  show = show'
-instance showMat22 :: Show a => Show (Mat Two Two a) where
-  show = show'
+instance showMat12 :: Show a => Show (Mat One Two a) where show = show'
+instance showMat21 :: Show a => Show (Mat Two One a) where show = show'
+instance showMat22 :: Show a => Show (Mat Two Two a) where show = show'
 
-instance showMat31 :: Show a => Show (Mat Three One a) where
-  show = show'
-instance showMat13 :: Show a => Show (Mat One Three a) where
-  show = show'
-instance showMat32 :: Show a => Show (Mat Three Two a) where
-  show = show'
-instance showMat23 :: Show a => Show (Mat Two Three a) where
-  show = show'
-instance showMat33 :: Show a => Show (Mat Three Three a) where
-  show = show'
+instance showMat31 :: Show a => Show (Mat Three One a) where show = show'
+instance showMat13 :: Show a => Show (Mat One Three a) where show = show'
+instance showMat32 :: Show a => Show (Mat Three Two a) where show = show'
+instance showMat23 :: Show a => Show (Mat Two Three a) where show = show'
+instance showMat33 :: Show a => Show (Mat Three Three a) where show = show'
 
-instance showMat41 :: Show a => Show (Mat Four One a) where
-  show = show'
-instance showMat14 :: Show a => Show (Mat One Four a) where
-  show = show'
-instance showMat42 :: Show a => Show (Mat Four Two a) where
-  show = show'
-instance showMat24 :: Show a => Show (Mat Two Four a) where
-  show = show'
-instance showMat43 :: Show a => Show (Mat Four Three a) where
-  show = show'
-instance showMat34 :: Show a => Show (Mat Three Four a) where
-  show = show'
-instance showMat44 :: Show a => Show (Mat Four Four a) where
-  show = show'
+instance showMat41 :: Show a => Show (Mat Four One a) where show = show'
+instance showMat14 :: Show a => Show (Mat One Four a) where show = show'
+instance showMat42 :: Show a => Show (Mat Four Two a) where show = show'
+instance showMat24 :: Show a => Show (Mat Two Four a) where show = show'
+instance showMat43 :: Show a => Show (Mat Four Three a) where show = show'
+instance showMat34 :: Show a => Show (Mat Three Four a) where show = show'
+instance showMat44 :: Show a => Show (Mat Four Four a) where show = show'
 
 instance eqMat :: (Eq a) => Eq (Mat r c a) where
   eq (Mat l) (Mat r) = l == r
