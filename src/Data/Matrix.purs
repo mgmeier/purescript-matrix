@@ -19,7 +19,7 @@ import Type.Proxy (Proxy(Proxy))
 
 import Data.Array (concat, length, range, slice, zipWith, (!!))
 import Data.FunctorWithIndex(class FunctorWithIndex, mapWithIndex)
-import Data.Maybe (fromJust)
+import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (over, class Newtype)
 import Data.String (joinWith)
 import Data.Tuple (Tuple, fst, snd)
@@ -129,8 +129,16 @@ getElem :: forall r c a.
   Mat r c a     -- Matrix
   -> Int        -- Row
   -> Int        -- Column
+  -> Maybe a
+getElem m@(Mat l) i j = l !! index m i j
+
+unsafeGetElem :: forall r c a.
+  Sized r => Sized c =>
+  Mat r c a     -- Matrix
+  -> Int        -- Row
+  -> Int        -- Column
   -> a
-getElem m@(Mat l) i j = unsafePartial $ fromJust (l !! index m i j)
+unsafeGetElem m@(Mat l) i j = unsafePartial $ fromJust (l !! index m i j)
 
 -- | Scale a matrix by a given factor.
 --   Example:
@@ -174,7 +182,7 @@ fromRows _ = fail "Matrix>>fromColumns: Wrong array length!"
 -- >           ( 4 5 6 )   ( 2 5 8 )
 -- > transpose ( 7 8 9 ) = ( 3 6 9 )
 transpose :: forall r c a.  Sized r => Sized c => Mat r c a -> Mat c r a
-transpose m = generate $ \i j -> getElem m j i
+transpose m = generate $ \i j -> unsafeGetElem m j i
 
 mulmatvec :: forall r c. Sized r => Sized c => Mat r c Number -> V.Vec c Number -> V.Vec r Number
 mulmatvec m v = V.Vec $ V.dot <$> rows m <*> [v]
