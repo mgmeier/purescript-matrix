@@ -18,7 +18,7 @@ import Prelude ((*), (+), (-), ($), (/), (==))
 import Data.TypeNat (Four, Three)
 import Data.Matrix (Mat(Mat), fromArrayColumns)
 import Data.Maybe (Maybe(Just, Nothing))
-import Extensions (fail)
+import Partial.Unsafe (unsafeCrashWith)
 
 type Mat3 = Mat Three Three Number
 
@@ -64,4 +64,4 @@ normalFromMat4 (Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23,
       -- Calculate the determinant
     det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06
 
-normalFromMat4 _ = fail "Matrix4>>normalFromMat4: Impossible!"
+normalFromMat4 _ = unsafeCrashWith "Matrix4>>normalFromMat4: Impossible!"

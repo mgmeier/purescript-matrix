@@ -27,8 +27,7 @@ import Data.Tuple.Nested ((/\))
 import Data.TypeNat (class Sized, Four, Three, Two, One, sized)
 import Data.Vector as V
 
-import Extensions (fail)
-import Partial.Unsafe (unsafePartial)
+import Partial.Unsafe (unsafePartial, unsafeCrashWith)
 
 newtype Mat r c a = Mat (Array a)
 
@@ -153,7 +152,7 @@ fromArrayColumns :: forall r c a. Sized r => Sized c => Array a -> Mat r c a
 fromArrayColumns l =
   case cs * rs of
         i | i == length l -> Mat l
-          | otherwise     -> fail "Matrix>>fromArrayColumns: Wrong array length!"
+          | otherwise     -> unsafeCrashWith "Matrix>>fromArrayColumns: Wrong array length!"
   where
     cs = sized (Proxy :: Proxy c)
     rs = sized (Proxy :: Proxy r)
@@ -169,11 +168,11 @@ toArrayRows = toArrayColumns <<< transpose
 
 fromColumns :: forall r c a. Sized r => Sized c => Array (V.Vec r a) -> Mat r c a
 fromColumns vs | ((length vs) == sized (Proxy :: Proxy c)) = Mat $ concat $ V.toArray <$> vs
-fromColumns _ = fail "Matrix>>fromColumns: Wrong array length!"
+fromColumns _ = unsafeCrashWith "Matrix>>fromColumns: Wrong array length!"
 
 fromRows :: forall r c a. Sized r => Sized c => Array (V.Vec c a) -> Mat r c a
 fromRows vs | ((length vs) == sized (Proxy :: Proxy r)) = transpose $ Mat $ concat $ V.toArray <$> vs
-fromRows _ = fail "Matrix>>fromColumns: Wrong array length!"
+fromRows _ = unsafeCrashWith "Matrix>>fromColumns: Wrong array length!"
 
 -- | /O(rows*cols)/. The transpose of a matrix.
 --   Example:
