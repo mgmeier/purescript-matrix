@@ -7,12 +7,11 @@ import Data.ST.Matrix4 (STMat4, translateST, rotateST, identityST) as M
 import Data.ST.Matrix (runSTMatrix) as M
 import Data.Vector as V
 
-import Control.Monad.Eff (Eff)
-import Control.Monad.ST (ST())
-import Control.Monad.Eff.Console (logShow, CONSOLE)
+import Effect (Effect)
+import Effect.Console (logShow)
 
 
-ble :: forall h r . Eff (st :: ST h | r) (M.STMat4 h)
+ble :: forall h. Effect (M.STMat4 h)
 -- ble = fromMatrix (M.fromArray [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]) >>= stackPush >>= scaleSTMatrix 2 >>= stackPop
 -- ble = M.identityST >>= M.scaleSTMatrix 2
 ble = M.identityST
@@ -26,7 +25,7 @@ ys = M.rotate 90.0 meh $ M.identity
 zs :: M.Mat4
 zs = M.translate meh $ M.identity
 
-main ::  forall eff. Eff (console :: CONSOLE | eff) Unit
+main :: Effect Unit
 main = do
 
     xs <- M.runSTMatrix (ble >>= \m -> M.rotateST 90.0 meh m *> pure m)

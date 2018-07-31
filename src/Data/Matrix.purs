@@ -19,8 +19,7 @@ import Data.Array (length, (!!), zipWith, slice, range, concat)
 import Data.Maybe (fromJust)
 import Data.TypeNat (class Sized, Four, Three, Two, sized)
 import Type.Proxy (Proxy(Proxy))
-import Extensions (fail)
-import Partial.Unsafe (unsafePartial)
+import Partial.Unsafe (unsafePartial, unsafeCrashWith)
 
 newtype Mat s a = Mat (Array a)
 
@@ -61,7 +60,7 @@ columns mat@(Mat m) | sized (Proxy :: Proxy s) == 2 =
    slice 8 12 m,
    slice 12 16 m]
                     | otherwise                        =
-    fail "Matrix>>columns: Proxy size not supprted!"
+    unsafeCrashWith "Matrix>>columns: Proxy size not supprted!"
 
 instance eqMat :: (Eq a) => Eq (Mat s a) where
   eq (Mat l) (Mat r) = l == r
@@ -107,7 +106,7 @@ fromArray l =
   let size = sized (Proxy :: Proxy s)
   in case size * size of
         i | i == length l -> Mat l
-          | otherwise     -> fail "Matrix>>fromArray: Wrong array length!"
+          | otherwise     -> unsafeCrashWith "Matrix>>fromArray: Wrong array length!"
 
 toArray :: forall s a. Mat s a -> Array a
 toArray (Mat a) = a

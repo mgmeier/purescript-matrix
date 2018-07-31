@@ -1,17 +1,13 @@
 {
   "name": "purescript-matrix",
   "homepage": "https://github.com/jutaro/purescript-matrix",
-  "version": "0.2.0",
-  "authors": [
-    "Juergen Nicklisch-Franken <jnf@arcor.de>"
-  ],
+  "version": "3.0.0",
+  "authors": ["Juergen Nicklisch-Franken <jnf@arcor.de>"],
   "description": "Matrices for purescript",
-  "keywords": [
-    "purescript"
-  ],
+  "keywords": ["purescript"],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jutaro/purescript-matrix.git"
+    "url": "git://github.com/mgmeier/purescript-matrix.git"
   },
   "license": "Apache-2.0",
   "ignore": [
@@ -26,17 +22,14 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-vector": "^2.0.0",
-    "purescript-arrays": "^4.2.0",
-    "purescript-extensions": "^2.2.0",
-    "purescript-proxy": "^2.1.0"
+    "purescript-vector": "AlexMouton/purescript-vector#compiler-0.12",
+    "purescript-arrays": "^5.0.0",
+    "purescript-proxy": "^3.0.0",
+    "purescript-effect": "2.0.0"
   },
   "devDependencies": {
-    "purescript-assert": "^3.0.0",
-    "purescript-console": "^3.0.0",
-    "purescript-random": "^3.0.0"
-  },
-  "resolutions": {
-    "purescript-extensions": "^2.2.0"
+    "purescript-assert": "^4.0.0",
+    "purescript-console": "^4.1.0",
+    "purescript-random": "^4.0.0"
   }
 }

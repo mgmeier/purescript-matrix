@@ -18,7 +18,7 @@ import Prelude ((*), (+), (-), ($), (/), (==))
 import Data.TypeNat (Four, Three)
 import Data.Matrix (Mat(Mat), fromArray)
 import Data.Maybe (Maybe(Just, Nothing))
-import Extensions (fail)
+import Partial.Unsafe (unsafeCrashWith)
 
 type Mat3 = Mat Three Number
 
@@ -63,4 +63,4 @@ normalFromMat4 (Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23,
                       (a31 * b05 - a32 * b04 + a33 * b03) * det,
                       (a32 * b02 - a30 * b05 - a33 * b01) * det,
                       (a30 * b04 - a31 * b02 + a33 * b00) * det]
-normalFromMat4 _ = fail "Matrix4>>normalFromMat4: Impossible!"
+normalFromMat4 _ = unsafeCrashWith "Matrix4>>normalFromMat4: Impossible!"
