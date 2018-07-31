@@ -1,7 +1,7 @@
 {
   "name": "purescript-matrix",
   "homepage": "https://github.com/jutaro/purescript-matrix",
-  "version": "0.2.0",
+  "version": "3.0.0",
   "authors": ["Juergen Nicklisch-Franken <jnf@arcor.de>"],
   "description": "Matrices for purescript",
   "keywords": ["purescript"],
