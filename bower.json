@@ -2,13 +2,9 @@
   "name": "purescript-matrix",
   "homepage": "https://github.com/jutaro/purescript-matrix",
   "version": "0.2.0",
-  "authors": [
-    "Juergen Nicklisch-Franken <jnf@arcor.de>"
-  ],
+  "authors": ["Juergen Nicklisch-Franken <jnf@arcor.de>"],
   "description": "Matrices for purescript",
-  "keywords": [
-    "purescript"
-  ],
+  "keywords": ["purescript"],
   "repository": {
     "type": "git",
     "url": "git://github.com/jutaro/purescript-matrix.git"
