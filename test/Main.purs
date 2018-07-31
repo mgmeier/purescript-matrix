@@ -8,7 +8,6 @@ import Data.ST.Matrix (runSTMatrix) as M
 import Data.Vector as V
 
 import Effect (Effect)
-import Control.Monad.ST (ST())
 import Effect.Console (logShow)
 
 

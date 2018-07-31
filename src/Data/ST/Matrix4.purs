@@ -19,7 +19,6 @@ import Data.TypeNat (Four)
 import Data.Matrix4 (Vec3N())
 import Data.ST.Matrix (STMat)
 import Effect (Effect)
-import Control.Monad.ST (ST())
 
 type STMat4 h = STMat Four h Number
 

@@ -16,7 +16,6 @@ module Data.ST.Matrix where
 
 import Prelude
 import Effect (Effect)
-import Control.Monad.ST (ST())
 import Data.TypeNat (class Sized)
 import Data.Array.ST (STArray)
 import Data.Matrix as M
