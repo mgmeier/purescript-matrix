@@ -22,7 +22,7 @@ import Data.Vector4 (Vec4) as V
 import Data.Vector (Vec(Vec), normalize, direction, dot) as V
 import Data.Maybe (Maybe(Just, Nothing))
 import Math (sin, cos, sqrt, pi, tan)
-import Extensions (fail)
+import Partial.Unsafe (unsafeCrashWith)
 
 
 type Vec3N = V.Vec3 Number
@@ -48,7 +48,7 @@ transform (Mat [x11, x12, x13, x14, x21, x22, x23, x24, x31, x32, x33, x34, x41,
       t4 = V.Vec[x14,x24,x34]
       w  = V.dot v t4 + x44
   in V.Vec [(V.dot v t1 + x41) / w,(V.dot v t2 + x42) / w,(V.dot v t3 + x43) / w]
-transform _ _ = fail "Matrix4>>transform: Impossible!"
+transform _ _ = unsafeCrashWith "Matrix4>>transform: Impossible!"
 
 -- | Computes the inverse of the given matrix m, assuming that the matrix is
 --   orthonormal.
@@ -62,8 +62,8 @@ inverseOrthonormal v@(Mat [x11, x12, x13, x14, x21, x22, x23, x24, x31, x32, x33
         r13 = negate (V.dot (V.Vec [y12,y22,y32]) t)
         r14 = negate (V.dot (V.Vec [y13,y23,y33]) t)
       in Mat [y11, y12, y13, 0.0, y21, y22, y23, 0.0, y31, y32, y33, 0.0, r12, r13, r14, y44]
-    _ ->   fail "Matrix4>>inverseOrthonormal: Impossible!"
-inverseOrthonormal _ = fail "Matrix4>>inverseOrthonormal: Impossible!"
+    _ ->   unsafeCrashWith "Matrix4>>inverseOrthonormal: Impossible!"
+inverseOrthonormal _ = unsafeCrashWith "Matrix4>>inverseOrthonormal: Impossible!"
 
 --  Calculates the inverse matrix of a mat4
 inverse :: Mat4 -> Maybe Mat4
@@ -101,7 +101,7 @@ inverse v@(Mat [a00, a01, a02, a03, a10, a11, a12, a13, a20, a21, a22, a23, a30,
                           (a00 * b09 - a01 * b07 + a02 * b06) * invDet,
                           (-a30 * b03 + a31 * b01 - a32 * b00) * invDet,
                           (a20 * b03 - a21 * b01 + a22 * b00) * invDet]
-inverse _ = fail "Matrix4>>inverse: Impossible!"
+inverse _ = unsafeCrashWith "Matrix4>>inverse: Impossible!"
 
 -- | Creates a matrix for a projection frustum with the given parameters.
 -- Parameters:
@@ -192,7 +192,7 @@ mulM (Mat [x11, x21, x31, x41, x12, x22, x32, x42, x13, x23, x33, x43, x14, x24,
               x21 * y14 + x22 * y24 + x23 * y34 + x24 * y44,
                 x31 * y14 + x32 * y24 + x33 * y34 + x34 * y44,
                   x41 * y14 + x42 * y24 + x43 * y34 + x44 * y44]
-mulM _ _ = fail "Matrix4>>mulM: Impossible!"
+mulM _ _ = unsafeCrashWith "Matrix4>>mulM: Impossible!"
 
 -- | Matrix multiplication, assuming a and b are affine: a * b
 mulAffine :: Mat4 -> Mat4 -> Mat4
@@ -214,7 +214,7 @@ mulAffine (Mat [x11, x12, x13, x14, x21, x22, x23, x24, x31, x32, x33, x34, x41,
               x21 * y14 + x22 * y24 + x23 * y34 + x24,
                 x31 * y14 + x32 * y24 + x33 * y34 + x34,
                   1.0]
-mulAffine _ _ = fail "Matrix4>>mulAffine: Impossible!"
+mulAffine _ _ = unsafeCrashWith "Matrix4>>mulAffine: Impossible!"
 
 -- | Creates a transformation matrix for rotation in radians about the 3-element V.Vector axis.
 makeRotate :: Number -> Vec3N -> Mat4
@@ -228,7 +228,7 @@ makeRotate angle axis =
               x*y*c1-z*s,y*y*c1+c,y*z*c1+x*s,0.0,
               x*z*c1+y*s,y*z*c1-x*s,z*z*c1+c,0.0,
               0.0,0.0,0.0,1.0]
-    _ -> fail "Matrix4>>makeRotate: Impossible!"
+    _ -> unsafeCrashWith "Matrix4>>makeRotate: Impossible!"
 
 -- | Concatenates a rotation in radians about an axis to the given matrix.
 rotate :: Number -> Vec3N -> Mat4 -> Mat4
@@ -270,7 +270,7 @@ rotate angle (V.Vec [a0,a1,a2])
               m31 * t13 + m32 * t23 + m33 * t33,
                 m41 * t13 + m42 * t23 + m43 * t33,
           m14,m24,m34,m44]
-rotate _ _ _ = fail "Matrix4>>rotate: Impossible!"
+rotate _ _ _ = unsafeCrashWith "Matrix4>>rotate: Impossible!"
 
 -- | Creates a transformation matrix for scaling by 3 scalar values, one for
 -- each of the x, y, and z directions.
@@ -284,7 +284,7 @@ makeScale3 x y z = Mat [x,0.0,0.0,0.0,
 -- the amount given in the corresponding element of the 3-element V.Vector.
 makeScale :: Vec3N -> Mat4
 makeScale (V.Vec [x,y,z]) = makeScale3 x y z
-makeScale _ = fail "Matrix4>>makeScale: Impossible!"
+makeScale _ = unsafeCrashWith "Matrix4>>makeScale: Impossible!"
 
 -- | Concatenates a scaling to the given matrix.
 scale3 :: Number -> Number -> Number -> Mat4 -> Mat4
@@ -293,12 +293,12 @@ scale3 x y z (Mat [x11, x12, x13, x14, x21, x22, x23, x24, x31, x32, x33, x34, x
         x21*y, x22*y, x23*y, x24*y,
         x31*z, x32*z, x33*z, x34*z,
         x41, x42, x43, x44]
-scale3 _ _ _ _ = fail "Matrix4>>scale3: Impossible!"
+scale3 _ _ _ _ = unsafeCrashWith "Matrix4>>scale3: Impossible!"
 
 -- | Concatenates a scaling to the given matrix.
 scale :: Vec3N -> Mat4 -> Mat4
 scale (V.Vec [x,y,z]) = scale3 x y z
-scale _ = fail "Matrix4>>scale: Impossible!"
+scale _ = unsafeCrashWith "Matrix4>>scale: Impossible!"
 
 -- | Creates a transformation matrix for translating by 3 scalar values, one for
 -- each of the x, y, and z directions.
@@ -312,7 +312,7 @@ makeTranslate3 x y z = Mat [1.0,0.0,0.0,0.0,
 -- axes by the amount given in the corresponding element of the 3-element V.Vector.
 makeTranslate :: Vec3N -> Mat4
 makeTranslate (V.Vec [x,y,z]) = makeTranslate3 x y z
-makeTranslate _ = fail "Matrix4>>makeTranslate: Impossible!"
+makeTranslate _ = unsafeCrashWith "Matrix4>>makeTranslate: Impossible!"
 
 -- | Concatenates a translation to the given matrix.
 translate3 :: Number -> Number -> Number -> Mat4 -> Mat4
@@ -324,12 +324,12 @@ translate3 x y z (Mat [m11, m21, m31, m41, m12, m22, m32, m42, m13, m23, m33, m4
           m21 * x + m22 * y + m23 * z + m24,
             m31 * x + m32 * y + m33 * z + m34,
               m41 * x + m42 * y + m43 * z + m44]
-translate3 x y z _ = fail "Matrix3>>translate3: Impossible!"
+translate3 x y z _ = unsafeCrashWith "Matrix3>>translate3: Impossible!"
 
 -- | Concatenates a translation to the given matrix.
 translate :: Vec3N -> Mat4 -> Mat4
 translate (V.Vec [x,y,z]) m = translate3 x y z m
-translate _ _               = fail "Matrix3>>translate: Impossible!"
+translate _ _               = unsafeCrashWith "Matrix3>>translate: Impossible!"
 
 -- | Creates a transformation matrix for a camera.
 -- Parameters:
@@ -353,10 +353,10 @@ makeLookAt eye@(V.Vec [e0,e1,e2]) center up =
                             0.0,0.0,1.0,0.0,
                             (-e0),(-e1),(-e2),1.0]
                 in mulM m1 m2
-            _ -> fail "Matrix4>>makeRotate: Impossible!"
-        _ -> fail "Matrix4>>makeRotate: Impossible!"
-    _ -> fail "Matrix4>>makeRotate: Impossible!"
-makeLookAt _ _ _ = fail "Matrix4>>makeLookAt: Impossible!"
+            _ -> unsafeCrashWith "Matrix4>>makeRotate: Impossible!"
+        _ -> unsafeCrashWith "Matrix4>>makeRotate: Impossible!"
+    _ -> unsafeCrashWith "Matrix4>>makeRotate: Impossible!"
+makeLookAt _ _ _ = unsafeCrashWith "Matrix4>>makeLookAt: Impossible!"
 
 -- | Creates a transform from a basis consisting of 3 linearly independent V.Vectors.
 makeBasis :: Vec3N -> Vec3N -> Vec3N -> Mat4
@@ -365,7 +365,7 @@ makeBasis (V.Vec [x0,x1,x2]) (V.Vec [y0,y1,y2]) (V.Vec [z0,z1,z2])=
         y0,y1,y2,0.0,
         z0,z1,z2,0.0,
         0.0,0.0,0.0,1.0]
-makeBasis _ _ _ = fail "Matrix4>>makeBasis: Impossible!"
+makeBasis _ _ _ = unsafeCrashWith "Matrix4>>makeBasis: Impossible!"
 
 project :: Vec3N
     -> Mat4
@@ -407,9 +407,9 @@ project (V.Vec [objx,objy,objz])
                                            (gt1' * 0.5 + 0.5) * vp3 + vp1,
                                            -- This is only correct when glDepthRange(0.0, 1.0)
                                            (1.0 + gt2') * 0.5])	-- Between 0 and 1
-                _ -> fail "Matrix4>>project: Impossible!"
-        _ ->    fail "Matrix4>>project: Impossible!"
-project _ _ _ _ = fail "Matrix4>>project: Impossible!"
+                _ -> unsafeCrashWith "Matrix4>>project: Impossible!"
+        _ ->    unsafeCrashWith "Matrix4>>project: Impossible!"
+project _ _ _ _ = unsafeCrashWith "Matrix4>>project: Impossible!"
 
 unProject :: Vec3N
     -> Mat4
@@ -437,8 +437,8 @@ unProject (V.Vec [winx,winy,winz])
                                 then Nothing
                                 else let out3' = 1.0 / out3
                                      in Just (V.Vec [out0 * out3',out1 * out3',out2 * out3'])
-                        _ -> fail "Matrix4>>unProject: Impossible!"
-unProject _ _ _ _ = fail "Matrix4>>unProject: Impossible!"
+                        _ -> unsafeCrashWith "Matrix4>>unProject: Impossible!"
+unProject _ _ _ _ = unsafeCrashWith "Matrix4>>unProject: Impossible!"
 
 mulMatVect :: Mat4 -> Vec4N -> Vec4N
 mulMatVect
@@ -448,4 +448,4 @@ mulMatVect
             m21 * v0 + m22 * v1 + m23 * v2 + m24 * v3,
             m31 * v0 + m32 * v1 + m33 * v2 + m34 * v3,
             m41 * v0 + m42 * v1 + m43 * v2 + m44 * v3]
-mulMatVect _ _ = fail "Matrix4>>mulMatVect: Impossible!"
+mulMatVect _ _ = unsafeCrashWith "Matrix4>>mulMatVect: Impossible!"
