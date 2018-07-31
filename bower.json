@@ -22,8 +22,7 @@
     "package.json"
   ],
   "dependencies": {
-    "purescript-vector":
-      "Charles-Schleich/purescript-vector#94ae6dee32ba3fde1ef6c0b6ada8d466f81da4a4",
+    "purescript-vector": "AlexMouton/purescript-vector#compiler-0.12",
     "purescript-arrays": "^5.0.0",
     "purescript-proxy": "^3.0.0",
     "purescript-effect": "2.0.0"
