@@ -7,7 +7,7 @@
   "keywords": ["purescript"],
   "repository": {
     "type": "git",
-    "url": "git://github.com/jutaro/purescript-matrix.git"
+    "url": "git://github.com/mgmeier/purescript-matrix.git"
   },
   "license": "Apache-2.0",
   "ignore": [
