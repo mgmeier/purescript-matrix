@@ -27,12 +27,13 @@
   ],
   "dependencies": {
     "purescript-vector": "^2.0.0",
-    "purescript-arrays": "^4.2.0",
-    "purescript-proxy": "^2.1.0"
+    "purescript-arrays": "^5.0.0",
+    "purescript-proxy": "^3.0.0",
+    "purescript-effect": "2.0.0"
   },
   "devDependencies": {
-    "purescript-assert": "^3.0.0",
-    "purescript-console": "^3.0.0",
-    "purescript-random": "^3.0.0"
+    "purescript-assert": "^4.0.0",
+    "purescript-console": "^4.1.0",
+    "purescript-random": "^4.0.0"
   }
 }
